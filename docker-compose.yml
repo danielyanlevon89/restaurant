@@ -1,0 +1,99 @@
+version: '3.8'
+services:
+  
+  #APP Service
+  app:
+    build:
+      args:
+        user: levon
+        uid: 1000
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    container_name: app
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
+    networks:
+      - app-network
+
+  #Nginx Service
+  webserver:
+    build: ./docker/nginx
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+     - '8003:80'
+     - '44303:443'
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx-logs:/var/log/nginx
+    networks:
+      - app-network
+
+ #MySQL Service
+  db:
+    image: mysql:8.0
+    container_name: db
+    restart: always
+    tty: true
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_ROOT_HOSTS: '%'
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+    volumes:
+      - dbdata:/var/lib/mysql/
+    networks:
+      - app-network
+
+  #Phpmyadmin
+  phpmyadmin:
+        depends_on:
+          - db
+        image: phpmyadmin/phpmyadmin
+        container_name: phpmyadmin
+        restart: always
+        ports:
+          - 7080:80
+        environment:
+          PMA_HOST: db
+          MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+        networks:
+           - app-network
+
+  #vite
+  vite:
+      image: node:latest
+      container_name: vite
+      entrypoint: /bin/sh
+      ports:
+        - '${VITE_PORT}:${VITE_PORT}'
+      working_dir: /var/www
+      volumes:
+        - type: bind
+          source: ./
+          target: /var/www
+      tty: true
+      networks:
+                - app-network
+
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+#Volumes
+volumes:
+  dbdata:
+    driver: local
