@@ -9,6 +9,9 @@ use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\SslCommerzPaymentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\admin\MenuController as AdminMenuController;
+use App\Http\Controllers\admin\ChefController as AdminChefController;
 
 
 /*
@@ -94,7 +97,7 @@ Route::group(['middleware' => ['customAuth']], function () {
 
     // Refund Routes for bKash
     Route::get('bkash/refund', 'BkashRefundController@index')->name('bkash-refund');
-    
+
     Route::post('bkash/refund', 'BkashRefundController@refund')->name('bkash-refund');
 
 });
@@ -117,32 +120,57 @@ Route::post('/ipn', [SslCommerzPaymentController::class, 'ipn']);
 
 // Admin start Route
 
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+Route::get('/dashboard', [AdminDashboardController::class, 'dashboard'])->name('admin.dashboard');
 
-Route::get('/admin/home', [AdminController::class, 'home'])->name('/admin/home');
+Route::get('/menus', [AdminMenuController::class, 'index'])->name('admin.menus');
+Route::get('/menu/add', [AdminMenuController::class, 'add'])->name('admin.menu.add');
+Route::post('/menu/create', [AdminMenuController::class, 'create'])->name('admin.menu.create');
+Route::get('/menu/{id}/edit/', [AdminMenuController::class, 'edit'])->name('admin.menu.edit');
+Route::get('/menu/{id}/delete/', [AdminMenuController::class, 'delete'])->name('admin.menu.delete');
+Route::put('/menu/{id}/update', [AdminMenuController::class, 'update'])->name('admin.menu.update');
 
-Route::get('/admin/food-menu', [AdminController::class, 'food_menu'])->name('/admin/food-menu');
-
-Route::get('/orders/process', [AdminController::class, 'orders_process'])->name('/orders/process');
-Route::get('/orders/cancel', [AdminController::class, 'orders_cancel'])->name('/orders/cancel');
-
-Route::get('/add/menu', [AdminController::class, 'add_menu'])->name('/add/menu');
-Route::get('/add/chef', [AdminController::class, 'add_chef'])->name('/add/chef');
-
-Route::get('/admin/chefs', [AdminController::class, 'chefs'])->name('/admin/chefs');
+Route::get('/chefs', [AdminChefController::class, 'index'])->name('admin.chefs');
+Route::get('/chef/add', [AdminChefController::class, 'add'])->name('admin.chef.add');
+Route::post('/chef/create', [AdminChefController::class, 'create'])->name('admin.chef.create');
+Route::get('/chef/{id}/edit/', [AdminChefController::class, 'edit'])->name('admin.chef.edit');
+Route::get('/chef/{id}/delete/', [AdminChefController::class, 'delete'])->name('admin.chef.delete');
+Route::put('/chef/{id}/update', [AdminChefController::class, 'update'])->name('admin.chef.update');
 
 
 
 
-Route::get('/admin/orders-incomplete', [AdminController::class, 'order_incomplete'])->name('/admin/orders-incomplete');
-Route::get('/orders-complete', [AdminController::class, 'order_complete'])->name('/orders-complete');
-Route::get('/admin/reservation', [AdminController::class, 'reservation'])->name('/admin/reservation');
+Route::get('/orders/process', [AdminController::class, 'orders_process'])->name('admin.orders.process');
+Route::get('/orders/cancel', [AdminController::class, 'orders_cancel'])->name('admin.orders.cancel');
+Route::get('/orders/complete', [AdminController::class, 'order_complete'])->name('admin.orders.complete');
+Route::get('/orders/location', [AdminController::class, 'order_location'])->name('admin.orders.location');
+Route::get('/orders/incomplete', [AdminController::class, 'order_incomplete'])->name('admin.orders.incomplete');
+
+Route::get('/reservation', [AdminController::class, 'reservation'])->name('admin.reservation');
+
+
+Route::get('/customize', [AdminController::class, 'customize'])->name('admin.customize');
+Route::get('/customize/edit', [AdminController::class, 'customize_edit'])->name('admin.customize.edit');
+Route::post('/customize/save', [AdminController::class, 'customize_save'])->name('admin.customize_save');
+
+Route::get('/banners', [AdminController::class, 'banner'])->name('admin.banners');
+Route::get('/banner/add', [AdminController::class, 'banner_add'])->name('admin.banner.add');
+
+
+
+
+
+
+
+
+
+
+
 Route::get('/admin/coupon', [AdminController::class, 'coupon_show'])->name('/admin/coupon');
 Route::get('/admin/show', [AdminController::class, 'admin_show'])->name('/admin/show');
 Route::get('/customer', [AdminController::class, 'user_show'])->name('/customer');
 Route::get('/admin/charge', [AdminController::class, 'charge'])->name('/admin/charge');
-Route::get('/admin/banner/all', [AdminController::class, 'banner'])->name('/admin/banner/all');
-Route::get('/admin/customize', [AdminController::class, 'customize'])->name('/admin/cutomize');
-Route::get('/admin/add/banner', [AdminController::class, 'banner_add'])->name('/admin/add/banner');
+
 
 Route::post('/menu/add/process', [AdminController::class, 'menu_add_process'])->name('/menu/add/process');
 Route::post('/chef/add/process', [AdminController::class, 'chef_add_process'])->name('/chef/add/process');
@@ -164,7 +192,7 @@ Route::get('/invoice/cancel-order/{id}', [AdminController::class, 'invoice_cance
 
 Route::get('/invoice/complete/{id}', [AdminController::class, 'invoice_complete'])->name('invoice/complete');
 
-Route::get('/order/location', [AdminController::class, 'order_location'])->name('/order/location');
+
 Route::post('/invoice/location/edit', [AdminController::class, 'edit_order_location'])->name('/invoice/location/edit');
 Route::get('/delivery-boy', [AdminController::class, 'delivery_boy'])->name('/delivery-boy');
 
@@ -193,5 +221,4 @@ Route::post('/charge-add-process', [AdminController::class, 'add_charge_process'
 Route::get('/admin/charge/delete/{id}', [AdminController::class, 'delete_charge'])->name('/admin/charge/delete');
 Route::get('/admin/charge/edit/{id}', [AdminController::class, 'edit_charge'])->name('/admin/edit/delete');
 Route::post('/charge-edit-process/{id}', [AdminController::class, 'edit_charge_process'])->name('/charge-edit-process');
-Route::get('/customize/edit', [AdminController::class, 'customize_edit'])->name('/customize/edit');
-Route::post('/customize_edit_process', [AdminController::class, 'edit_customize_process'])->name('/customize_edit_process');
+});

@@ -5,23 +5,23 @@
     <br>
     @if(Session::has('wrong'))
     <div class="alert">
-  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
   <strong>Opps !</strong> {{Session::get('wrong')}}
 </div>
     @endif
     @if(Session::has('success'))
     <br>
     <div class="success">
-  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
   <strong>Congrats !</strong> {{Session::get('success')}}
 </div>
     <br>
     @endif
     <br>
-    
+
     <br>
     <br>
-    
+
 <table id="cart" class="table table-hover table-condensed container">
     <thead>
         <tr>
@@ -38,9 +38,9 @@
             @php $total += $product['price'] * $product['quantity'] @endphp
             <tr>
                 <td>{{$product->name}}</td>
-                <td style="text-align:center">৳{{$product->price}}</td>
+                <td style="text-align:center">{{$product->price}} Руб</td>
                 <td style="text-align:center">{{$product->quantity}}</td>
-                <td style="text-align:center">৳{{$product->subtotal}}</td>
+                <td style="text-align:center">{{$product->subtotal}} Руб</td>
                 <td style="text-align:center" class="actions" data-th="">
                     <form method="post" action="{{route('cart.destroy', $product)}}" onsubmit="return confirm('Sure?')">
                         @csrf
@@ -50,8 +50,8 @@
                 </td>
             </tr>
         @endforeach
-    
-  
+
+
       @if($total_price!=0)
 
 
@@ -60,27 +60,27 @@
                 <td>{{  $chrage->name }}</td>
                 <td style="text-align:center"></td>
                 <td style="text-align:center"></td>
-                
-              
-                <td style="text-align:center">৳{{  $chrage->price }}</td>
 
 
-        
+                <td style="text-align:center">{{  $chrage->price }} Руб</td>
+
+
+
                 </tr>
             @endforeach
 
 
 
       @endif
-        @php 
-        
+        @php
 
-        
+
+
         @endphp
         </tbody>
     <tfoot>
         <form method="post" action="{{route('coupon/apply')}}">
-            @csrf    
+            @csrf
 
             @if($total_price==0)
             <td colspan="3" class="text-right" ><strong>  <p style="margin-top:8px !important;">Coupon Code</p> </strong></td>
@@ -95,11 +95,11 @@
 </form>
         </tr>
         <tr>
-        @php 
-        
-        
+        @php
+
+
         $total = $total_price + $total_extra_charge;
-        
+
         Session::put('total',$total_price);
 
         if($total_price!=0)
@@ -112,18 +112,18 @@
 
 
 
-        
+
         @endphp
-       
-            <td colspan="5" class="text-right"><h5><strong>Total ৳{{ $without_discount_price }}</strong></h5></td>
+
+            <td colspan="5" class="text-right"><h5><strong>Total {{ $without_discount_price }} Руб</strong></h5></td>
         </tr>
         <tr>
-  
-            <td colspan="5" class="text-right"><h5><strong>Discount ৳{{ $discount_price }}</strong></h5></td>
+
+            <td colspan="5" class="text-right"><h5><strong>Discount {{ $discount_price }} Руб</strong></h5></td>
         </tr>
         <tr>
-      
-            <td colspan="5" class="text-right"><h3><strong>Total (With Discount) ৳{{ $total_price }}</strong></h3></td>
+
+            <td colspan="5" class="text-right"><h3><strong>Total (With Discount) {{ $total_price }} Руб</strong></h3></td>
         </tr>
         <tr>
             <td colspan="5" class="text-right">

@@ -31,7 +31,7 @@
   </head>
   <body>
     <div class="container-scroller">
-   
+
       <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
@@ -104,7 +104,7 @@
             <span class="nav-link">Navigation</span>
           </li>
           <li class="nav-item menu-items">
-            <a class="nav-link" href="/redirects">
+              <a class="nav-link" href="{{route('admin.dashboard')}}">
               <span class="menu-icon">
                 <i class="mdi mdi-speedometer"></i>
               </span>
@@ -113,17 +113,17 @@
           </li>
           @if(Auth::user()->usertype != 2)
           <li class="nav-item menu-items">
-            <a class="nav-link" href="/admin/food-menu">
+              <a class="nav-link" href="{{route('admin.menus')}}">
               <span class="menu-icon">
                 <i class="mdi mdi-food"></i>
               </span>
               <span class="menu-title">Food Menu</span>
             </a>
           </li>
-          
+
 
           <li class="nav-item menu-items">
-            <a class="nav-link" href="/admin/chefs">
+              <a class="nav-link" href="{{route('admin.chefs')}}">
               <span class="menu-icon">
                 <i class="mdi mdi-food"></i>
               </span>
@@ -142,11 +142,16 @@
             </a>
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="/admin/orders-incomplete">Pending Orders</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/orders/process">Processing Order</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/orders-complete">Complete Orders</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/orders/cancel">Cancelled Order</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/order/location">Update Location</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{route('admin.orders.incomplete')}}">Pending
+                          Orders</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{route('admin.orders.process')}}">Processing Order</a>
+                  </li>
+                  <li class="nav-item"><a class="nav-link" href="{{route('admin.orders.complete')}}">Complete Orders</a>
+                  </li>
+                  <li class="nav-item"><a class="nav-link" href="{{route('admin.orders.cancel')}}">Cancelled Order</a>
+                  </li>
+                  <li class="nav-item"><a class="nav-link" href="{{route('admin.orders.location')}}">Update Location</a>
+                  </li>
 
               </ul>
             </div>
@@ -169,9 +174,9 @@
             </div>
           </li>
           -->
-      
+
           <li class="nav-item menu-items">
-            <a class="nav-link" href="/admin/reservation">
+              <a class="nav-link" href="{{route('admin.reservation')}}">
               <span class="menu-icon">
                 <i class="mdi mdi-chart-bar"></i>
               </span>
@@ -180,7 +185,7 @@
           </li>
           @if(Auth::user()->usertype == 1)
           <li class="nav-item menu-items">
-            <a class="nav-link" href="/admin/customize">
+              <a class="nav-link" href="{{route('admin.customize.edit')}}">
               <span class="menu-icon">
                 <i class="mdi mdi-settings"></i>
               </span>
@@ -215,7 +220,7 @@
 
 
           <li class="nav-item menu-items">
-            <a class="nav-link" href="/customer">
+              <a class="nav-link" href="/admin/customer">
               <span class="menu-icon">
                 <i class="mdi mdi-account-plus"></i>
               </span>
@@ -236,7 +241,7 @@
           </li>
 
           @endif
-          
+
 
           @if(Auth::user()->usertype != 2)
 
@@ -260,8 +265,7 @@
 
           @endif
 
-     
-         
+
         </ul>
       </nav>
       <!-- partial -->
@@ -333,8 +337,8 @@
                   <i class="mdi mdi-email"></i>
                   <span class="count bg-success"></span>
                 </a>
-           
-              <li class="nav-item dropdown">
+
+                <li class="nav-item dropdown">
                 <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                   <div class="navbar-profile">
                     <img class="img-xs rounded-circle" src="{{asset('assets/images/admin/'.Auth::user()->profile_photo_path)}}" alt="">
@@ -379,23 +383,21 @@
         <!-- partial -->
         <div class="main-panel">
           <div class="content-wrapper">
-       
-         
-          @yield('container')
-          
-     
 
-            </div>
-         
-           
-       
-          <!-- content-wrapper ends -->
+
+          @yield('container')
+
+
+          </div>
+
+
+            <!-- content-wrapper ends -->
           <!-- partial:partials/_footer.html -->
           <footer class="footer">
             <div class="d-sm-flex justify-content-center justify-content-sm-between">
               <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © RMS  2022</span>
-         
-              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> <a href="/" target="_blank">Go to Client Section</a></span>
+
+                <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> <a href="/" target="_blank">Go to Client Section</a></span>
             </div>
           </footer>
           <!-- partial -->

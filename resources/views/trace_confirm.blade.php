@@ -37,14 +37,14 @@
     <div class="column">
 
     <img src="{{ asset('assets/images/package.png')}}" height="100px" weight="100px" alt="">
-    
+
 
     </div>
 
     <div class="column">
 
     @if($product->product_order=="cancel")
-    
+
     <img src="{{ asset('assets/images/cancel.jpg')}}" style="margin-top: !important;" height="50px" weight="50px"  alt="">
 
     <h1 style= "color:Gray;padding-top:10px !important;" class="border2"></h1>
@@ -52,9 +52,9 @@
 
 
     @endif
-    
+
     @if($product->product_order=="approve" || $product->product_order=="delivery")
-    
+
     <img src="{{ asset('assets/images/right.png')}}" style="margin-top:-15px !important;" height="50px" weight="50px"  alt="">
 
     <h1 style="color:Green;">----------></h1>
@@ -64,7 +64,7 @@
     @endif
 
 
-    
+
     @if($product->product_order=="yes")
 
     <h6 style="padding-top:25px;color:Red;padding-bottom:10px;">Waiting for Approve</h6>
@@ -83,7 +83,7 @@
     </div>
     <div class="column">
 
-    
+
     @if($product->product_order=="approve")
 
     <h6 id="count_down" style="padding-top:25px;color:Red;padding-bottom:10px;">(Remaining : {{ $product->delivery_time }})</h6>
@@ -118,7 +118,7 @@
 
     </div>
 
- 
+
 
     <div class="column">
 
@@ -148,7 +148,7 @@
 
 
     </center>
-   
+
 <table id="cart" class="table table-hover table-condensed container">
     <thead>
         <tr>
@@ -156,7 +156,7 @@
             <th style="text-align:center;width:10%">Price</th>
             <th style="width:8%">Quantity</th>
             <th style="width:22%" class="text-center">Subtotal</th>
-     
+
         </tr>
     </thead>
     <tbody>
@@ -165,12 +165,12 @@
             @php $total += $product['price'] * $product['quantity'] @endphp
             <tr>
                 <td>{{$product->name}}</td>
-                <td style="text-align:center">৳{{$product->price}}</td>
+                <td style="text-align:center">{{$product->price}} Руб</td>
                 <td style="text-align:center">{{$product->quantity}}</td>
-                <td style="text-align:center">৳{{$product->subtotal}}</td>
-                
+                <td style="text-align:center">{{$product->subtotal}} Руб</td>
+
             </tr>
-            
+
         @endforeach
 
         @foreach($extra_charge as $charge)
@@ -179,52 +179,52 @@
                 <td>{{$charge->name}}</td>
                 <td style="text-align:center"></td>
                 <td style="text-align:center"></td>
-                <td style="text-align:center">৳{{$charge->price}}</td>
-                
+                <td style="text-align:center">{{$charge->price}} Руб</td>
+
             </tr>
-            
+
         @endforeach
     </tbody>
     <tfoot>
     <tr>
-        @php 
-        
-        
+        @php
+
+
         $total = $total_price;
-        
+
         Session::put('total',$total_price);
-        
+
         @endphp
-            <td colspan="4" class="text-right"><h6><strong>Total ৳{{ $without_discount_price }}</strong></h6></td>
+            <td colspan="4" class="text-right"><h6><strong>Total {{ $without_discount_price }} Руб</strong></h6></td>
         </tr>
         <tr>
-        @php 
-        
-        
+        @php
+
+
         $total = $total_price;
-        
+
         Session::put('total',$total_price);
-        
+
         @endphp
-            <td colspan="4" class="text-right"><h6><strong>Discount ৳{{ $discount_price }}</strong></h6></td>
+            <td colspan="4" class="text-right"><h6><strong>Discount {{ $discount_price }} Руб</strong></h6></td>
         </tr>
         <tr>
-        @php 
+        @php
 
         $time="Jan 5, 2024 15:37:25";
-        
-        
+
+
         $total = $total_price;
-        
+
         Session::put('total',$total_price);
-        
+
         @endphp
-            <td colspan="4" class="text-right"><h3><strong>Total (With Discount)৳{{ $total_price }}</h2></strong></h3></td>
+            <td colspan="4" class="text-right"><h3><strong>Total (With Discount) {{ $total_price }}  Руб </strong></h3></td>
         </tr>
         <tr>
             <td colspan="5" class="text-right">
                 <a href="{{ url('/menu') }}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a>
-             
+
             </td>
         </tr>
     </tfoot>
@@ -239,7 +239,7 @@
     height: 100%;
     width: 100%;
     background: linear-gradient(90deg, black 50%, transparent 50%);
-               
+
     background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
     background-size: 16px 4px, 16px 4px, 4px 16px, 4px 16px;
     background-position: 0% 0%, 100% 100%, 0% 100%, 100% 0px;
@@ -272,13 +272,13 @@ var x = setInterval(function() {
     var time=$('#previous_time').val();
     var copy_time=time;
     substring="pm";
-    
+
     time = time.substring(0, 22);
 
- 
+
 
     console.log(time);
-  
+
     var countDownDate = new Date(time).getTime();
 
     if(copy_time.includes(substring))
@@ -305,27 +305,27 @@ var x = setInterval(function() {
     //pm indictator
 
 
- 
+
     // Get today's date and time
     var now = new Date();
     now=now.getTime();
     now.toLocaleString('en-US', { timeZone: 'America/New_York' });
     console.log(now);
-        
+
     // Find the distance between now and the count down date
     var distance = countDownDate - now;
-        
+
     // Time calculations for days, hours, minutes and seconds
     var days = Math.floor(distance / (1000 * 60 * 60 * 24));
     var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        
+
     // Output the result in an element with id="demo"
     document.getElementById("count_down").innerHTML = "( Remaining : " + days + "d " + hours + "h "
     + minutes + "m " + seconds + "s )";
-        
-    // If the count down is over, write some text 
+
+    // If the count down is over, write some text
     if (distance < 0) {
         clearInterval(x);
         document.getElementById("count_down").innerHTML = "Ready for Delivery";

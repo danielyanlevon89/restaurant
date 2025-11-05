@@ -11,25 +11,27 @@
                     <h4 class="card-title">Edit Menu</h4>
                     <br>
                     @if(Session::has('wrong'))
-              
+
                       <div class="alert">
-                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                          <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                     <strong>Opps !</strong> {{Session::get('wrong')}}
                   </div>
                   <br>
                       @endif
                       @if(Session::has('success'))
-                 
+
                       <div class="success">
-                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                          <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                     <strong>Congrats !</strong> {{Session::get('success')}}
                   </div>
                       <br>
                       @endif
 
-                    <form class="forms-sample" action="{{ asset('/menu/edit/process/'.$product->id) }}" method="post" enctype="multipart/form-data">
+                      <form class="forms-sample" action="{{route('admin.menu.update',$product->id)}}" method="POST"
+                            enctype="multipart/form-data">
 
                        @csrf
+                          @method('PUT')
 
                       <div class="form-group">
                         <label for="exampleInputName1">Name</label>
@@ -39,8 +41,8 @@
                         <label for="exampleTextarea1">Description</label>
                         <textarea class="form-control" value="{{ $product->description }}" name="description" id="exampleTextarea1" rows="5">{{ $product->description }}</textarea>
                       </div>
-                    
-                      <div class="form-group">
+
+                          <div class="form-group">
                         <label for="exampleInputPassword4">Price</label>
                         <input type="number" name="price" value="{{ $product->price }}" class="form-control" id="exampleInputPassword4">
                       </div>
@@ -53,10 +55,14 @@
                       </div>
                       <div class="form-group">
                         <label for="exampleSelectGender">Season</label>
-                        <select class="form-control" name="session" id="exampleSelectGender">
-                          <option value="0" @php if($product->session=="0"){ echo"selected"; }   @endphp>Breakfast</option>
-                          <option value="1" @php if($product->session=="1"){ echo"selected"; }   @endphp>Lunch</option>
-                          <option value="2" @php if($product->session=="2"){ echo"selected"; }   @endphp>Dinner</option>
+                          <select class="form-control" name="meal_type" id="exampleSelectGender">
+                              <option value="0" @php if($product->meal_type=="0"){ echo"selected"; }   @endphp>
+                                  Breakfast
+                              </option>
+                              <option value="1" @php if($product->meal_type=="1"){ echo"selected"; }   @endphp>Lunch
+                              </option>
+                              <option value="2" @php if($product->meal_type=="2"){ echo"selected"; }   @endphp>Dinner
+                              </option>
                         </select>
                       </div>
 
@@ -72,9 +78,9 @@
                         <label for="exampleFormControlFile1">Image</label>
                         <input type="file" name="image" class="form-control-file" id="exampleFormControlFile1">
                     </div>
-                  
-                    
-                      <button type="submit" class="btn btn-primary me-2">Update</button>
+
+
+                          <button type="submit" class="btn btn-primary me-2">Update</button>
                       <button class="btn btn-dark">Cancel</button>
                     </form>
                   </div>

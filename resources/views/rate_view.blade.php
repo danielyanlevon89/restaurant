@@ -27,24 +27,24 @@
                 <td>
                     <img src="{{asset('assets/images/'.$products->image)}}" height=150px width=180px></td>
                     <td><h2>{{$products->name}}</h2>
-                    <h4>৳{{$products->price}}</h4>
+                    <h4>{{$products->price}} Руб</h4>
                     <p>{{$products->description}}</p>
-                   
+
                       <?php
 
 
                         Session::put('product_id',$products->id);
 
-                   
+
                         $whole = floor($per_rate);      // 1
                         $fraction = $per_rate - $whole
 
 
                        ?>
-              
 
-                      
-                        
+
+
+
                         <span class="product_rating">
 
                             @for($i=1;$i<=$whole;$i++)
@@ -52,18 +52,18 @@
                             <i class="fa fa-star "></i>
 
                             @endfor
-                            
+
                             @if($fraction!=0)
 
                             <i class="fa fa-star-half"></i>
 
                             @endif
-                                  
-                                  
+
+
                             <span class="rating_avg">({{  $per_rate}})</span>
             </span>
             <br>
-            
+
             @php
 
 
@@ -76,11 +76,11 @@
 
             <div id="rate" class="rate" style="margin-bottom:30px !important;margin-right:430px; !important">
 
-          
+
 
                 @for($i=$find_rate+1;$i<=5;$i++)
 
-          
+
 
                 <label id="star{{ $i }}"  style="color: #FCA311;"></label>
 
@@ -91,7 +91,7 @@
 
                 @for($i=1;$i<=$find_rate;$i++)
 
-          
+
 
                 <label id="star{{ $i }}" onclick="rate({{ $i }})" style="color: #FCA311;" class="active"></label>
 
@@ -109,9 +109,9 @@
                 <a href="/edit/rate/{{ $products->id }}" style="color:green;padding-top:50px !important;">,<b>Edit Rating</b></a>
 
                 <a href="/delete/rate/" style="color:red;margin-left:20px;padding-top:50px !important;"><b>Delete Rating</b></a>
-            
 
-                
+
+
 
 
                 <!--
@@ -120,7 +120,7 @@
 
                     <label id="star5" onclick="rate(5)" style="color: #FCA311;" ></label>
                     <label id="star4" onclick="rate(4)" style="color: #FCA311;"></label>
-                 <label id="star3" onclick="rate(3)" style="color: #FCA311;"></label> 
+                 <label id="star3" onclick="rate(3)" style="color: #FCA311;"></label>
                     <label id="star2" onclick="rate(2)" style="color: #FCA311;"></label>
                     <label id="star1" onclick="rate(1)" style="color: #FCA311; margin-left:-150px; !important"></label>
                 </div>
@@ -131,7 +131,7 @@
 
                 </td>
             </tr>
-    
+
 </table>
 @endsection
 <style>
@@ -154,7 +154,7 @@ p{
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    
+
 }
 
 label {
@@ -187,7 +187,7 @@ function rate(value) {
 
 
 //Aqui quitamos el color de las estrellas - Remove Active
-function clearRates() { 
+function clearRates() {
     for(var i=1; i<=5; i++) {
         //document.getElementById("star" +i).classList.remove("active");
     }
@@ -196,7 +196,7 @@ function clearRates() {
 }
 
 //Aqui añadimos el color a las estrellas - Add Active
-function addRates(value) { 
+function addRates(value) {
     for(var i=1; i<=value; i++) {
         document.getElementById("star" +i).classList.add("active");
     }
@@ -205,10 +205,10 @@ function addRates(value) {
    window.location = "confirm/"+value;
 }
 
- //capturo cualquier click en cualquier sitio 
+ //capturo cualquier click en cualquier sitio
 //si el click NO está dentro del div quitamos el color a las estrellas
 window.addEventListener("click", function(click) {
-    if(!document.getElementById("rate").contains(click.target)) { 
+    if(!document.getElementById("rate").contains(click.target)) {
         clearRates();
     }
 })

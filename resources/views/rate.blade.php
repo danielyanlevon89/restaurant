@@ -16,9 +16,9 @@
     <br><br><br>
     <div class="row justify-content-center">
             <div>
-            
+
                 <p id="text-area" style="font-size:50px;marigin-bottom:-50px;">Please, rate our service</p>
-  
+
             </div>
         </div>
 <table class="table table-striped table-bordered" style="margin:10%; max-width:80%;">
@@ -27,15 +27,15 @@
                 <td>
                     <img src="{{asset('assets/images/'.$products->image)}}" height=150px width=180px></td>
                     <td><h2>{{$products->name}}</h2>
-                    <h4>৳{{$products->price}}</h4>
+                    <h4>{{$products->price}} Руб</h4>
                     <p>{{$products->description}}</p>
-                   
+
                       <?php
 
 
                         Session::put('product_id',$products->id);
 
-                          
+
                         $whole = floor($per_rate);      // 1
                         $fraction = $per_rate - $whole
 
@@ -43,8 +43,8 @@
 
 
                        ?>
-              
-                        
+
+
                         <span class="product_rating">
                         @for($i=1;$i<=$whole;$i++)
 
@@ -57,13 +57,13 @@
                             <i class="fa fa-star-half"></i>
 
                             @endif
-                                
-                                
+
+
                             <span class="rating_avg">({{  $per_rate}})</span>
             </span>
             <br>
-            
-      
+
+
 
 
 
@@ -72,18 +72,18 @@
 
                     <label id="star5" onclick="rate(5)" style="color: #FCA311;" ></label>
                     <label id="star4" onclick="rate(4)" style="color: #FCA311;"></label>
-                 <label id="star3" onclick="rate(3)" style="color: #FCA311;"></label> 
+                 <label id="star3" onclick="rate(3)" style="color: #FCA311;"></label>
                     <label id="star2" onclick="rate(2)" style="color: #FCA311;"></label>
                     <label id="star1" onclick="rate(1)" style="color: #FCA311; margin-left:-150px; !important"></label>
                 </div>
 
 
 
-  
+
 
                 </td>
             </tr>
-    
+
 </table>
 @endsection
 <style>
@@ -106,7 +106,7 @@ p{
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    
+
 }
 
 label {
@@ -143,7 +143,7 @@ function rate(value) {
 
 
 //Aqui quitamos el color de las estrellas - Remove Active
-function clearRates() { 
+function clearRates() {
     for(var i=1; i<=5; i++) {
         document.getElementById("star" +i).classList.remove("active");
     }
@@ -152,7 +152,7 @@ function clearRates() {
 }
 
 //Aqui añadimos el color a las estrellas - Add Active
-function addRates(value) { 
+function addRates(value) {
     for(var i=1; i<=value; i++) {
         document.getElementById("star" +i).classList.add("active");
     }
@@ -161,10 +161,10 @@ function addRates(value) {
    window.location = "/rate/confirm/"+value;
 }
 
- //capturo cualquier click en cualquier sitio 
+ //capturo cualquier click en cualquier sitio
 //si el click NO está dentro del div quitamos el color a las estrellas
 window.addEventListener("click", function(click) {
-    if(!document.getElementById("rate").contains(click.target)) { 
+    if(!document.getElementById("rate").contains(click.target)) {
         clearRates();
     }
 })

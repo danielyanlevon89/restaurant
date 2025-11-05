@@ -31,7 +31,7 @@
 
                         @endforeach
                           <!-- // Item -->
-                         
+
                         </div>
                     </div>
                 </div>
@@ -99,11 +99,11 @@
                                 <div class="row">
                                     <div class="col-lg-6 offset-lg-3">
                                         <ul>
-                                  
+
                                           <li><a href='#tabs-1'><img src="{{ asset('assets/images/tab-icon-01.png')}}" alt="">Breakfast</a></li>
                                           <li><a href='#tabs-2'><img src="{{ asset('assets/images/tab-icon-02.png')}}" alt="">Lunch</a></a></li>
                                           <li><a href='#tabs-3'><img src="{{ asset('assets/images/tab-icon-03.png')}}" alt="">Dinner</a></a></li>
-                                      
+
                                         </ul>
                                     </div>
                                 </div>
@@ -118,7 +118,7 @@
 
                                         <?php
 
-                            
+
                                         $total_rate=DB::table('rates')->where('product_id',$item->id)
                                         ->sum('star_value');
 
@@ -152,14 +152,14 @@
                                         <div class="col-lg-6">
                                             <div class="row">
                                                 <div class="left-list">
-                                                
+
                                                     <div class="col-lg-12">
                                                         <div class="tab-item">
                                                             <img src="{{ asset('assets/images/'.$item->image)}}" alt="">
                                                             <h4>{{ $item->name }}</h4>
                                                             <p>{{  $item->description }}</p>
                                                             <div class="price">
-                                                                <h6>৳{{  $item->price }}</h6>
+                                                                <h6>{{  $item->price }} Руб</h6>
                                                             </div>
                                                             <span class="product_rating">
                                                         @for($i=1;$i<=$whole;$i++)
@@ -173,15 +173,15 @@
                                                             <i class="fa fa-star-half"></i>
 
                                                             @endif
-                                                                
-                                                                
+
+
                                                             <span class="rating_avg">({{  $per_rate}})</span>
                                     </span>
                             <br>
                                                         </div>
                                                     </div>
-                                                
-                                                </div>      
+
+                                                </div>
                                             </div>
                                         </div>
                                         @endif
@@ -192,7 +192,7 @@
 
                                         <?php
 
-                            
+
                                         $total_rate=DB::table('rates')->where('product_id',$item->id)
                                         ->sum('star_value');
 
@@ -232,7 +232,7 @@
                                                             <h4>{{ $item->name }}</h4>
                                                             <p>{{  $item->description }}</p>
                                                             <div class="price">
-                                                                <h6>৳{{  $item->price }}</h6>
+                                                                <h6>{{  $item->price }} Руб</h6>
                                                             </div>
                                                             <span class="product_rating">
                                                         @for($i=1;$i<=$whole;$i++)
@@ -246,24 +246,24 @@
                                                             <i class="fa fa-star-half"></i>
 
                                                             @endif
-                                                                
-                                                                
+
+
                                                             <span class="rating_avg">({{  $per_rate}})</span>
                                     </span>
                             <br>
                                                         </div>
                                                     </div>
-                                                
+
                                                 </div>
                                             </div>
                                         </div>
                                         @endif
 
                                         @endforeach
-                                        
-                                      
+
+
                                     </div>
-                                </article>  
+                                </article>
                                 <article id='tabs-2'>
                                     <div class="row">
                                     @foreach($lunch as $item)
@@ -271,7 +271,7 @@
 
                                     <?php
 
-                            
+
                                         $total_rate=DB::table('rates')->where('product_id',$item->id)
                                         ->sum('star_value');
 
@@ -305,14 +305,14 @@
                                         <div class="col-lg-6">
                                             <div class="row">
                                                 <div class="left-list">
-                                                
+
                                                     <div class="col-lg-12">
                                                         <div class="tab-item">
                                                             <img src="{{ asset('assets/images/'.$item->image)}}" alt="">
                                                             <h4>{{ $item->name }}</h4>
                                                             <p>{{  $item->description }}</p>
                                                             <div class="price">
-                                                                <h6>৳{{  $item->price }}</h6>
+                                                                <h6>{{  $item->price }} Руб</h6>
                                                             </div>
                                                             <span class="product_rating">
                                                         @for($i=1;$i<=$whole;$i++)
@@ -326,14 +326,14 @@
                                                             <i class="fa fa-star-half"></i>
 
                                                             @endif
-                                                                
-                                                                
+
+
                                                             <span class="rating_avg">({{  $per_rate}})</span>
                                     </span>
                                                         </div>
                                                     </div>
-                                                  
-                                                </div>      
+
+                                                </div>
                                             </div>
                                         </div>
                                         @endif
@@ -343,7 +343,7 @@
 
                                     <?php
 
-                            
+
                                         $total_rate=DB::table('rates')->where('product_id',$item->id)
                                         ->sum('star_value');
 
@@ -383,7 +383,7 @@
                                                             <h4>{{ $item->name }}</h4>
                                                             <p>{{  $item->description }}</p>
                                                             <div class="price">
-                                                                <h6>৳{{  $item->price }}</h6>
+                                                                <h6>{{  $item->price }} Руб</h6>
                                                             </div>
                                                             <span class="product_rating">
                                                         @for($i=1;$i<=$whole;$i++)
@@ -397,23 +397,23 @@
                                                             <i class="fa fa-star-half"></i>
 
                                                             @endif
-                                                                
-                                                                
+
+
                                                             <span class="rating_avg">({{  $per_rate}})</span>
                                     </span>
                             <br>
                                                         </div>
                                                     </div>
-                                                  
+
                                                 </div>
                                             </div>
                                         </div>
                                         @endif
 
                                     @endforeach
-                                      
+
                                     </div>
-                                </article>  
+                                </article>
                                 <article id='tabs-3'>
                                     <div class="row">
                                     @foreach($dinner as $item)
@@ -421,7 +421,7 @@
 
                                     <?php
 
-                            
+
                                         $total_rate=DB::table('rates')->where('product_id',$item->id)
                                         ->sum('star_value');
 
@@ -455,14 +455,14 @@
                                         <div class="col-lg-6">
                                             <div class="row">
                                                 <div class="left-list">
-                                                
+
                                                     <div class="col-lg-12">
                                                         <div class="tab-item">
                                                             <img src="{{ asset('assets/images/'.$item->image)}}" alt="">
                                                             <h4>{{ $item->name }}</h4>
                                                             <p>{{  $item->description }}</p>
                                                             <div class="price">
-                                                                <h6>৳{{  $item->price }}</h6>
+                                                                <h6>{{  $item->price }} Руб</h6>
                                                             </div>
                                                             <span class="product_rating">
                                                         @for($i=1;$i<=$whole;$i++)
@@ -476,16 +476,16 @@
                                                             <i class="fa fa-star-half"></i>
 
                                                             @endif
-                                                                
-                                                                
+
+
                                                             <span class="rating_avg">({{  $per_rate}})</span>
                                     </span>
                             <br>
-                                  
+
                                                         </div>
                                                     </div>
-                                                
-                                                </div>      
+
+                                                </div>
                                             </div>
                                         </div>
                                         @endif
@@ -496,7 +496,7 @@
 
                                         <?php
 
-                            
+
                                         $total_rate=DB::table('rates')->where('product_id',$item->id)
                                         ->sum('star_value');
 
@@ -536,7 +536,7 @@
                                                             <h4>{{ $item->name }}</h4>
                                                             <p>{{  $item->description }}</p>
                                                             <div class="price">
-                                                                <h6>৳{{  $item->price }}</h6>
+                                                                <h6>{{  $item->price }} Руб</h6>
                                                             </div>
                                                             <span class="product_rating">
                                                         @for($i=1;$i<=$whole;$i++)
@@ -550,22 +550,22 @@
                                                             <i class="fa fa-star-half"></i>
 
                                                             @endif
-                                                                
-                                                                
+
+
                                                             <span class="rating_avg">({{  $per_rate}})</span>
                                     </span>
                                                         </div>
                                                     </div>
-                                                
+
                                                 </div>
                                             </div>
                                         </div>
                                         @endif
 
                                     @endforeach
-                                     
+
                                     </div>
-                                </article>   
+                                </article>
                             </section>
                             <br>
                             <a href="/menu"><input style="color:#fff; background-color:#FB5849; font-size:20px;"
@@ -576,7 +576,7 @@
             </div>
         </div>
     </section>
-    <!-- ***** Chefs Area Ends ***** --> 
+    <!-- ***** Chefs Area Ends ***** -->
 <!-- ***** Menu Area Starts ***** -->
 <section class="section"  id="menu">
         <div class="container">
@@ -592,26 +592,26 @@
         <div class="menu-item-carousel">
             <div class="col-lg-12">
                 <div class="owl-menu-item owl-carousel" >
-                  
+
                     @foreach($menu as $product)
-                   
+
                     <div class="item">
 
                     <?php
                         $img=$product->image;
                     ?>
-                        <div class='card' style="background-image: url({{asset('assets/images/'.$img)}})"> 
+                        <div class='card' style="background-image: url({{asset('assets/images/'.$img)}})">
 
-                            <div class="price"><h6>৳{{ $product->price }}</h6>
+                            <div class="price"><h6>{{ $product->price }} Руб</h6>
                             @if($product->available!="Stock")
-                            <h4 style="">Out Of Stock</h4> 
+                            <h4 style="">Out Of Stock</h4>
 
                             @endif
-                        
+
                         </div>
                         <?php
 
-                            
+
                             $total_rate=DB::table('rates')->where('product_id',$product->id)
                             ->sum('star_value');
 
@@ -657,8 +657,8 @@
                                     <i class="fa fa-star-half"></i>
 
                                     @endif
-                                        
-                                        
+
+
                                     <span class="rating_avg">({{  $per_rate}})</span>
             </span>
       <br>
@@ -681,11 +681,11 @@
                                 @endif
                                 </div>
                               </div>
-                              
+
                             </div>
                         </div>
                     </div>
-                   
+
                     @endforeach
                 </div>
             </div>
@@ -696,7 +696,7 @@
     <!-- ***** Chefs Area Starts ***** -->
     <section class="section" id="chefs">
         <div class="container">
-          
+
             <div class="row">
                 <div class="col-lg-4 offset-lg-4 text-center">
                     <div class="section-heading">
@@ -705,7 +705,7 @@
                     </div>
                 </div>
             </div>
-           
+
             <div class="row">
                 @foreach($chefs as $chef)
                 <div class="col-lg-4">
@@ -726,7 +726,7 @@
                     </div>
                 </div>
                 @endforeach
-                
+
             </div>
         </div>
     </section>
@@ -808,14 +808,14 @@
                               </fieldset>
                             </div>
                             <div class="col-lg-6">
-                                <div id="filterDate2">    
+                                <div id="filterDate2">
                                   <div class="input-group date" data-date-format="dd/mm/yyyy">
                                     <input  name="date" id="date" type="text" class="form-control" placeholder="dd/mm/yyyy">
                                     <div class="input-group-addon" >
                                       <span class="glyphicon glyphicon-th"></span>
                                     </div>
                                   </div>
-                                </div>   
+                                </div>
                             </div>
                             <div class="col-md-6 col-sm-12">
                               <fieldset>
@@ -846,6 +846,6 @@
     </section>
     <!-- ***** Reservation Area Ends ***** -->
 
-   
-    
+
+
    @endsection

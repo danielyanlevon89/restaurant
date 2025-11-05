@@ -7,7 +7,7 @@
 @if(Session::has('wrong'))
 
     <div class="alert">
-  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
   <strong>Opps !</strong> {{Session::get('wrong')}}
 </div>
 <br>
@@ -15,7 +15,7 @@
     @if(Session::has('success'))
 
     <div class="success">
-  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
   <strong>Congrats !</strong> {{Session::get('success')}}
 </div>
     <br>
@@ -64,21 +64,21 @@
                       <table class="table">
                         <thead>
                           <tr>
-                          
-           
+
+
                             <th> Product Name </th>
                             <th> Price </th>
                             <th> Quantity </th>
                             <th> Subtotal </th>
-                          
+
                           </tr>
                         </thead>
                         <tbody>
 
                         @foreach($products as $product)
                           <tr>
-                           
-                      
+
+
                             <td> {{ $product->name }} </td>
                             <td> {{ $product->price }} </td>
                             <td>
@@ -91,17 +91,17 @@
 
 
                             <td>  {{  $product->subtotal }}</td>
-                      
+
                           </tr>
 
                         @endforeach
 
                         @foreach($extra_charge as $charge)
                           <tr>
-                           
-                      
+
+
                             <td> {{ $charge->name }} </td>
-                      
+
                            <td>
 
                            </td>
@@ -109,7 +109,7 @@
 
 
                             <td>  {{  $charge->price }}</td>
-                      
+
                           </tr>
 
                         @endforeach
@@ -118,29 +118,29 @@
                             <td></td>
                             <td></td>
                             <td>Total </td>
-                            <td class="">  ৳{{  $wihout_discount_price }}</td>                   
-                    
-                    
+                            <td class="">  {{  $wihout_discount_price }} Руб</td>
+
+
                         </tr>
 
                         <tr>
                             <td></td>
                             <td></td>
                             <td>Discount </td>
-                            <td class="">  ৳{{  $discount_price }}</td>                   
-                    
-                    
+                            <td class="">  {{  $discount_price }} Руб</td>
+
+
                         </tr>
 
                         <tr>
                             <td></td>
                             <td></td>
                             <td><h3>Total (With Discount)</h3> </td>
-                            <td class=""><h3>  ৳{{  $total_price }} </h3></td>                   
-                    
-                    
+                            <td class=""><h3>  {{  $total_price }} Руб</h3></td>
+
+
                         </tr>
-                       
+
                         </tbody>
                       </table>
                     </div>
@@ -154,9 +154,9 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title">Update Order Location</h4>
-                  
-                    
-          
+
+
+
 
                     <form class="forms-sample" action="{{ asset('/invoice/approve/'.$product->invoice_no) }}" method="post" enctype="multipart/form-data">
 
@@ -173,21 +173,21 @@
                         <input type="datetime-local" name="time" value="{{ $product->delivery_time }}" class="form-control" id="exampleInputName1">
 
                       </div>
-                 
-                    
+
+
                       <button type="submit" class="btn btn-primary me-2">Update Order</button>
                       <a href="{{  asset('/invoice/cancel-order/'.$product->invoice_no) }}" class="btn btn-danger">Cancel Order</a>
                     </form>
 
                     @break;
 
-   
+
 
                   </div>
                 </div>
 
             </div>
-           
+
 
 
 
@@ -195,7 +195,7 @@
             @endforeach
 
 
-         
+
 
 
 

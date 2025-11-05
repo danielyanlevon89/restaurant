@@ -3,7 +3,7 @@
 @section('container')
 
 <div class="row">
-              
+
               </div>
               <div class="row">
                 <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
@@ -103,7 +103,7 @@
                           <p class="text-muted mb-0"></p>
                         </div>
                         <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
-                          <h6 class="font-weight-bold mb-0">৳{{   $total   }}</h6>
+                          <h6 class="font-weight-bold mb-0">{{   $total   }} Руб</h6>
                         </div>
                       </div>
 
@@ -113,7 +113,7 @@
                           <p class="text-muted mb-0"></p>
                         </div>
                         <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
-                          <h6 class="font-weight-bold mb-0">৳{{   $cash_on_payment   }}</h6>
+                          <h6 class="font-weight-bold mb-0">{{   $cash_on_payment   }} Руб</h6>
                         </div>
                       </div>
 
@@ -124,7 +124,7 @@
                           <p class="text-muted mb-0"></p>
                         </div>
                         <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
-                          <h6 class="font-weight-bold mb-0">৳{{  $online_payment  }}</h6>
+                          <h6 class="font-weight-bold mb-0">{{  $online_payment  }} Руб</h6>
                         </div>
                       </div>
                     </div>
@@ -148,7 +148,7 @@
                               $i=1;
 
                           @endphp
-                          
+
                           @foreach($per_rate as $prod)
 
                           @if($i>5)
@@ -174,14 +174,6 @@
 
                           $voter=DB::table('rates')->where('product_id',$index_search)->count();
 
-
-                          //$per_rate=number_format($per_rate, 1);
-
-
-                          // $whole = floor($per_rate);      // 1
-                          //$fraction = $per_rate - $whole
-
-
                           $i++;
 
 
@@ -195,12 +187,6 @@
 
                                 </div>
                               </div>
-                      
-                      
-
-
-
-                              
 
                               <div class="preview-item-content d-sm-flex flex-grow">
                                 <div class="flex-grow">
@@ -209,14 +195,14 @@
                                 </div>
                                 <div class="me-auto text-sm-right pt-2 pt-sm-0">
                                   <p class="text-muted">{{  $voter }}</p>
-                                
+
                                 </div>
                               </div>
                             </div>
                             @endforeach
-                           
-                            
-                         
+
+
+
                           </div>
                         </div>
                       </div>
@@ -292,25 +278,25 @@
                         <table class="table">
                           <thead>
                             <tr>
-                             
+
                               <th style="text-align:center;"> Product ID </th>
                               <th style="text-align:center;"> Product Name </th>
                               <th  style="text-align:center;"> Price </th>
                               <th   style="text-align:center;"> Quantity </th>
-                          
+
                             </tr>
                           </thead>
                           <tbody>
 
 
-                          
+
                           @php
 
 
                               $i=1;
 
                           @endphp
-                          
+
                           @foreach($product_cart as $prod)
 
                           @if($i>5)
@@ -321,47 +307,24 @@
                           @endif
                           @php
 
-                          $index_search = array_search($prod,$copy_cart);
+                                                        $index_search = array_search($prod,$copy_cart);
 
+                                                        $product_get=DB::table('products')->where('id',$index_search)->first();
 
+                                                        $copy_cart[$index_search]=NULL;
 
-
-                          $product_get=DB::table('products')->where('id',$index_search)->first();
-
-
-
-
-                          $copy_cart[$index_search]=NULL;
-
-
-
-
-                          //$per_rate=number_format($per_rate, 1);
-
-
-                          // $whole = floor($per_rate);      // 1
-                          //$fraction = $per_rate - $whole
-
-
-                          $i++;
-
-
-
+                                                        $i++;
                           @endphp
-
-
                             <tr>
-                             
-                              <td style="text-align:center;"> {{    $product_get->id      }} </td>
-                              <td style="text-align:center;"> {{   $product_get->name  }} </td>
-                              <td  style="text-align:center;"> {{    $product_get->price          }} </td>
+                              <td style="text-align:center;"> {{    $product_get->id??''      }} </td>
+                              <td style="text-align:center;"> {{   $product_get->name??''  }} </td>
+                              <td  style="text-align:center;"> {{    $product_get->price??''          }} </td>
                               <td    style="text-align:center;"> {{              $prod      }} </td>
-                           
+
                             </tr>
 
-
                           @endforeach
-                           
+
                           </tbody>
                         </table>
                       </div>
@@ -399,7 +362,7 @@ console.log(online_pay_value);
 
 var chart = new CanvasJS.Chart("chartContainer", {
 	theme: "dark2", // "light2", "dark1", "dark2"
-	animationEnabled: false, // change to true		
+	animationEnabled: false, // change to true
 	title:{
 		text: ""
 	},
@@ -410,7 +373,7 @@ var chart = new CanvasJS.Chart("chartContainer", {
 		dataPoints: [
 			{ label: "Cash on Delivery",  y: +cash_pay_value  },
 			{ label: "Online Payment", y: +online_pay_value  },
-		
+
 		]
 	}
 	]

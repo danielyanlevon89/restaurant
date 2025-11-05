@@ -10,9 +10,9 @@ use Hash;
 
 class AdminController extends Controller
 {
-    
 
-    public function home()
+
+    public function dashboard()
     {
 
         if(!Auth::user())
@@ -28,7 +28,149 @@ class AdminController extends Controller
     		return redirect('/');
     	}
 
-        return redirect('redirects');
+        $pending_order=DB::table('carts')->where('product_order','yes')->groupBy('invoice_no')->count();
+
+        $processing_order=DB::table('carts')->where('product_order','approve')->groupBy('invoice_no')->count();
+
+        $cancel_order=DB::table('carts')->where('product_order','cancel')->groupBy('invoice_no')->count();
+
+        $complete_order=DB::table('carts')->where('product_order','delivery')->groupBy('invoice_no')->count();
+
+
+        $total=DB::table('carts')->sum('subtotal');
+
+
+        $cash_on_payment=DB::table('carts')->where('pay_method','Cash On Delivery')->sum('subtotal');
+
+
+        $online_payment=$total-$cash_on_payment;
+
+
+        $customer=DB::table('users')->where('usertype','0')->count();
+
+
+        $delivery_boy=DB::table('users')->where('usertype','2')->count();
+
+
+        $user=DB::table('users')->count();
+
+
+        $admin=$user-($customer + $delivery_boy);
+
+
+        $rates=DB::table('rates')->get();
+
+        $product=array();
+
+
+        foreach($rates as $rate)
+        {
+
+
+            $product[$rate->product_id]=0;
+            $voter[$rate->product_id]=0;
+            $per_rate[$rate->product_id]=0;
+
+
+
+        }
+
+
+
+        foreach($rates as $rate)
+        {
+
+
+            $product[$rate->product_id]=$product[$rate->product_id]+ $rate->star_value;
+
+
+            $voter[$rate->product_id]=$voter[$rate->product_id]+ 1;
+
+            if($voter[$rate->product_id] > 0)
+            {
+
+                $per_rate[$rate->product_id]=$product[$rate->product_id] / $voter[$rate->product_id];
+
+            }
+            else
+            {
+
+
+                $per_rate[$rate->product_id]=$product[$rate->product_id];
+
+
+            }
+
+            $per_rate[$rate->product_id]=number_format($per_rate[$rate->product_id], 1);
+
+
+
+
+        }
+
+        $copy_product=$per_rate;
+
+        arsort($per_rate);
+
+
+        // return $per_rate;
+
+
+        $product_get=array();
+
+
+        foreach($per_rate as $prod)
+        {
+
+            $index_search = array_search($prod, $copy_product);
+
+            $product_get=DB::table('products')->where('id',$index_search)->get();
+
+
+            // return $product_get;
+
+
+
+
+
+        }
+
+
+        $carts=DB::table('carts')->where('product_order','!=','no')->where('product_order','!=','cancel')->get();
+
+        $cart=array();
+
+
+        foreach($carts as $cart)
+        {
+
+
+            $product_cart[$cart->product_id]=0;
+
+
+
+
+        }
+
+
+
+        foreach($carts as $cart)
+        {
+
+
+            $product_cart[$cart->product_id]=$product_cart[$cart->product_id]+ $cart->quantity;
+
+
+
+        }
+
+        $copy_cart=$product_cart;
+
+        arsort($product_cart);
+
+
+
+        return view('admin.dashboard',compact('pending_order','product_cart','copy_cart','total','copy_product','per_rate','product','cash_on_payment','online_payment','customer','delivery_boy','admin','processing_order','cancel_order','complete_order'));
 
 
 
@@ -59,13 +201,13 @@ class AdminController extends Controller
 
         $fraction_products=DB::table('products')->latest()->get();
 
- 
+
         return view('admin.menu',compact('products','fraction','total_products','fraction_products'));
 
 
 
     }
-    
+
     public function chefs()
     {
 
@@ -92,7 +234,7 @@ class AdminController extends Controller
 
         $fraction_chefs=DB::table('chefs')->latest()->get();
 
- 
+
         return view('admin.chefs',compact('chefs','fraction','total_chefs','fraction_chefs'));
 
 
@@ -133,17 +275,17 @@ class AdminController extends Controller
     public function reservation()
     {
 
-        
+
         $reservations=DB::table('reservations')->get();
- 
- 
+
+
          return view('admin.reservations',compact('reservations'));
 
 
 
 
     }
-    
+
     public function add_menu()
     {
 
@@ -245,8 +387,8 @@ class AdminController extends Controller
 
             'image'=>'mimes:jpeg,jpg,png',
         ]);
-     
-     
+
+
         $uploadedfile=$req->file('image');
         $new_image=rand().'.'.$uploadedfile->getClientOriginalExtension();
         $uploadedfile->move(public_path('/assets/images/'),$new_image);
@@ -274,13 +416,13 @@ class AdminController extends Controller
     {
 
 
-     
+
         $this->validate(request(),[
 
             'image'=>'mimes:jpeg,jpg,png',
         ]);
-     
-     
+
+
         $uploadedfile=$req->file('image');
         $new_image=rand().'.'.$uploadedfile->getClientOriginalExtension();
         $uploadedfile->move(public_path('/assets/images/'),$new_image);
@@ -301,7 +443,7 @@ class AdminController extends Controller
         return back();
 
 
-        
+
     }
     public function menu_delete_process($id)
     {
@@ -337,7 +479,7 @@ class AdminController extends Controller
 
         $products=DB::table('products')->where('id',$id)->get();
 
-        
+
         return view('admin.menu_edit',compact('products'));
 
 
@@ -350,7 +492,7 @@ class AdminController extends Controller
 
         $chefs=DB::table('chefs')->where('id',$id)->get();
 
-        
+
         return view('admin.chef_edit',compact('chefs'));
 
 
@@ -369,8 +511,8 @@ class AdminController extends Controller
 
         }
 
-   
-       
+
+
 
         $data=array();
         $data['name']=$req->name;
@@ -387,8 +529,8 @@ class AdminController extends Controller
 
                 'image'=>'mimes:jpeg,jpg,png',
             ]);
-         
-         
+
+
             $uploadedfile=$req->file('image');
             $new_image=rand().'.'.$uploadedfile->getClientOriginalExtension();
             $uploadedfile->move(public_path('/assets/images/'),$new_image);
@@ -396,7 +538,7 @@ class AdminController extends Controller
             $data['image']=$new_image;
 
         }
-  
+
 
 
         $update=DB::table('products')->where('id',$id)->Update($data);
@@ -415,8 +557,8 @@ class AdminController extends Controller
     {
 
 
-     
-    
+
+
 
         $data=array();
         $data['name']=$req->name;
@@ -424,7 +566,7 @@ class AdminController extends Controller
         $data['facebook_link']=$req->fb;
         $data['twitter_link']=$req->twitter;
         $data['instragram_link']=$req->instagram;
-       
+
         if($req->image!=NULL)
         {
 
@@ -432,8 +574,8 @@ class AdminController extends Controller
 
                 'image'=>'mimes:jpeg,jpg,png',
             ]);
-         
-         
+
+
             $uploadedfile=$req->file('image');
             $new_image=rand().'.'.$uploadedfile->getClientOriginalExtension();
             $uploadedfile->move(public_path('/assets/images/'),$new_image);
@@ -450,7 +592,7 @@ class AdminController extends Controller
         return back();
 
 
-        
+
     }
 
     public function invoice_approve(Request $req,$id)
@@ -459,7 +601,7 @@ class AdminController extends Controller
         $data=array();
 
         $data['product_order']="approve";
-    
+
        // return $req->time;
 
         $time_set_up=strtotime($req->time);
@@ -486,7 +628,7 @@ class AdminController extends Controller
 
 
         }
-        
+
         if($status!="approve")
         {
             $details = [
@@ -494,9 +636,9 @@ class AdminController extends Controller
                 'body' => 'Your order Invoice no - '.$id.' Delivery Time (approximately) - '.$req->time,
             ];
 
-            
+
             $user=DB::table('users')->where('id',$user_id)->first();
-        
+
             \Mail::to($user->email)->send(new \App\Mail\ApproveMail($details));
 
 
@@ -516,9 +658,9 @@ class AdminController extends Controller
                 'body' => 'Your order approved by RMS.Your order Invoice no - '.$id.' & Delivery Remaining Time (approximately) - '.$req->time,
             ];
 
-            
+
             $user=DB::table('users')->where('id',$user_id)->first();
-        
+
             \Mail::to($user->email)->send(new \App\Mail\ApproveMail($details));
 
 
@@ -537,7 +679,7 @@ class AdminController extends Controller
     }
     public function invoice_details($id)
     {
-       
+
        $products=DB::table('carts')->where('invoice_no',$id)->get();
        $charges=DB::table('charges')->get();
 
@@ -547,7 +689,7 @@ class AdminController extends Controller
         {
 
             $coupon_code=$product->coupon_id;
-          
+
 
 
 
@@ -615,7 +757,7 @@ class AdminController extends Controller
 
         }
         $user=DB::table('users')->where('id',$user_id)->first();
-       
+
         \Mail::to($user->email)->send(new \App\Mail\ApproveMail($details));
 
 
@@ -637,13 +779,13 @@ class AdminController extends Controller
 
         }
 
-    
-       
+
+
 
 
 
     }
-    
+
 
     public function order_location()
     {
@@ -668,7 +810,7 @@ class AdminController extends Controller
 
             session()->flash('wrong','Invalid Invoice no !');
             return back();
-    
+
 
 
         }
@@ -691,12 +833,12 @@ class AdminController extends Controller
 
            session()->flash('wrong','Order not approved !');
            return back();
-   
+
 
 
        }
 
-        
+
 
        $charges=DB::table('charges')->get();
 
@@ -786,12 +928,12 @@ class AdminController extends Controller
 
 
         }
-        
-       
-        
-            
+
+
+
+
             $user=DB::table('users')->where('id',$user_id)->first();
-        
+
             \Mail::to($user->email)->send(new \App\Mail\ApproveMail($details));
 
 
@@ -802,7 +944,7 @@ class AdminController extends Controller
             return back();
 
 
- 
+
 
 
 
@@ -879,7 +1021,7 @@ class AdminController extends Controller
         if($req->password!=$req->confirm_password)
         {
 
-            
+
             session()->flash('wrong','Password do not match !');
             return back();
 
@@ -890,8 +1032,8 @@ class AdminController extends Controller
 
             'image'=>'mimes:jpeg,jpg,png',
         ]);
-     
-     
+
+
         $uploadedfile=$req->file('image');
         $new_image=rand().'.'.$uploadedfile->getClientOriginalExtension();
         $uploadedfile->move(public_path('/assets/images/admin/'),$new_image);
@@ -922,7 +1064,7 @@ class AdminController extends Controller
 
 
         }
-   
+
 
 
         $insert=DB::table('users')->Insert($data);
@@ -934,7 +1076,7 @@ class AdminController extends Controller
         ];
 
 
-    
+
         \Mail::to($req->email)->send(new \App\Mail\UserAddedMail($details));
 
 
@@ -963,7 +1105,7 @@ class AdminController extends Controller
         ];
 
 
-    
+
         \Mail::to(Auth::user()->email)->send(new \App\Mail\UserAddedMail($details));
 
         $delete=DB::table('users')->where('id',$id)->delete();
@@ -977,7 +1119,7 @@ class AdminController extends Controller
         }
 
 
-      
+
 
 
         session()->flash('success','Admin deleted successfully !');
@@ -987,7 +1129,7 @@ class AdminController extends Controller
 
 
     }
-    
+
     public function edit_admin($id)
     {
 
@@ -1046,7 +1188,7 @@ class AdminController extends Controller
         $data['phone']=$req->phone;
         $data['usertype']=$req->type;
         $data['salary']=$req->salary;
-     
+
 
         if($req->image != NULL)
         {
@@ -1055,8 +1197,8 @@ class AdminController extends Controller
 
                 'image'=>'mimes:jpeg,jpg,png',
             ]);
-         
-         
+
+
             $uploadedfile=$req->file('image');
             $new_image=rand().'.'.$uploadedfile->getClientOriginalExtension();
             $uploadedfile->move(public_path('/assets/images/admin/'),$new_image);
@@ -1080,7 +1222,7 @@ class AdminController extends Controller
 
 
         }
-   
+
 
 
         $update=DB::table('users')->where('id',$id)->Update($data);
@@ -1091,35 +1233,35 @@ class AdminController extends Controller
                 'title' => 'Mail from RMS Admin',
                 'body' => 'Congrats ! Your information is updated by RMS Admin Panel.',
             ];
-    
-    
+
+
             if(($req->salary != NULL && $req->salary > $previous_salary) || ($req->type !=NULL && $req->type < $previous_position))
             {
-    
-                
+
+
                 $details = [
                     'title' => 'Mail from RMS Admin',
                     'body' => 'Congrats ! You are promoted for a '.$usertype.' position. ( Now, Your salary - '.$req->salary.'Tk ) of RMS by RMS Admin Panel.',
                 ];
-    
-    
+
+
             }
             else if(($req->salary != NULL && $req->salary < $previous_salary) || ($req->type !=NULL && $req->type > $previous_position))
             {
-    
-    
+
+
                 $details = [
                     'title' => 'Mail from RMS Admin',
                     'body' => 'Sorry ! You are depromoted for a '.$usertype.' position. ( Now, Your salary - '.$req->salary.'Tk ) of RMS by RMS Admin Panel.',
                 ];
-    
-    
+
+
             }
-          
-       
+
+
             \Mail::to($req->email)->send(new \App\Mail\UserAddedMail($details));
-    
-    
+
+
             session()->flash('success','Admin updated successfully !');
 
 
@@ -1131,7 +1273,7 @@ class AdminController extends Controller
 
         }
 
-     
+
         return back();
 
 
@@ -1199,7 +1341,7 @@ class AdminController extends Controller
         if($req->password!=$req->confirm_password)
         {
 
-            
+
             session()->flash('wrong','Password do not match !');
             return back();
 
@@ -1210,8 +1352,8 @@ class AdminController extends Controller
 
             'image'=>'mimes:jpeg,jpg,png',
         ]);
-     
-     
+
+
         $uploadedfile=$req->file('image');
         $new_image=rand().'.'.$uploadedfile->getClientOriginalExtension();
         $uploadedfile->move(public_path('/assets/images/admin/'),$new_image);
@@ -1226,7 +1368,7 @@ class AdminController extends Controller
         $data['password']=Hash::make($req->password);
 
 
-   
+
 
 
         $insert=DB::table('users')->Insert($data);
@@ -1238,7 +1380,7 @@ class AdminController extends Controller
         ];
 
 
-    
+
         \Mail::to($req->email)->send(new \App\Mail\UserAddedMail($details));
 
 
@@ -1251,7 +1393,7 @@ class AdminController extends Controller
     public function delete_delivery_boy($id)
     {
 
-    
+
 
         $details = [
             'title' => 'Mail from RMS Admin',
@@ -1259,7 +1401,7 @@ class AdminController extends Controller
         ];
 
 
-    
+
         \Mail::to(Auth::user()->email)->send(new \App\Mail\UserAddedMail($details));
 
         $delete=DB::table('users')->where('id',$id)->delete();
@@ -1328,7 +1470,7 @@ class AdminController extends Controller
         $data['email']=$req->email;
         $data['phone']=$req->phone;
         $data['salary']=$req->salary;
-     
+
 
         if($req->image != NULL)
         {
@@ -1337,8 +1479,8 @@ class AdminController extends Controller
 
                 'image'=>'mimes:jpeg,jpg,png',
             ]);
-         
-         
+
+
             $uploadedfile=$req->file('image');
             $new_image=rand().'.'.$uploadedfile->getClientOriginalExtension();
             $uploadedfile->move(public_path('/assets/images/admin/'),$new_image);
@@ -1346,8 +1488,8 @@ class AdminController extends Controller
 
 
         }
-     
-   
+
+
 
 
         $update=DB::table('users')->where('id',$id)->Update($data);
@@ -1358,35 +1500,35 @@ class AdminController extends Controller
                 'title' => 'Mail from RMS Admin',
                 'body' => 'Congrats ! Your information is updated by RMS Admin Panel.',
             ];
-    
-    
+
+
             if(($req->salary != NULL && $req->salary > $previous_salary))
             {
-    
-                
+
+
                 $details = [
                     'title' => 'Mail from RMS Admin',
                     'body' => 'Congrats ! You are promoted for a  Delivery Boy position. ( Now, Your salary - '.$req->salary.'Tk ) of RMS by RMS Admin Panel.',
                 ];
-    
-    
+
+
             }
             else if(($req->salary != NULL && $req->salary < $previous_salary))
             {
-    
-    
+
+
                 $details = [
                     'title' => 'Mail from RMS Admin',
                     'body' => 'Sorry ! You are depromoted for a  Delivery Boy position. ( Now, Your salary - '.$req->salary.'Tk ) of RMS by RMS Admin Panel.',
                 ];
-    
-    
+
+
             }
-          
-       
+
+
             \Mail::to($req->email)->send(new \App\Mail\UserAddedMail($details));
-    
-    
+
+
             session()->flash('success','Delivery Boy updated successfully !');
 
 
@@ -1398,7 +1540,7 @@ class AdminController extends Controller
 
         }
 
-     
+
         return back();
 
 
@@ -1415,8 +1557,8 @@ class AdminController extends Controller
 
             'image'=>'mimes:jpeg,jpg,png',
         ]);
-     
-     
+
+
         $uploadedfile=$req->file('image');
         $new_image=rand().'.'.$uploadedfile->getClientOriginalExtension();
         $uploadedfile->move(public_path('/assets/images/'),$new_image);
@@ -1459,8 +1601,8 @@ class AdminController extends Controller
 
             'image'=>'mimes:jpeg,jpg,png',
         ]);
-     
-     
+
+
         $uploadedfile=$req->file('image');
         $new_image=rand().'.'.$uploadedfile->getClientOriginalExtension();
         $uploadedfile->move(public_path('/assets/images/'),$new_image);
@@ -1627,7 +1769,7 @@ class AdminController extends Controller
 
 
 
-        
+
         $load=DB::table('coupons')->where('id',$id)->Update($data);
 
 
@@ -1658,7 +1800,7 @@ class AdminController extends Controller
 
         $data['name']=$req->name;
         $data['price']=$req->price;
-     
+
 
 
 
@@ -1726,7 +1868,7 @@ class AdminController extends Controller
 
         $data['name']=$req->name;
         $data['price']=$req->price;
-     
+
 
 
 
@@ -1766,7 +1908,7 @@ class AdminController extends Controller
 
     }
 
-    public function edit_customize_process(Request $req)
+    public function customize_save(Request $req)
     {
 
         $data=array();
@@ -1779,7 +1921,7 @@ class AdminController extends Controller
         $data['title']=$req->title;
         $data['description']=$req->description;
         $data['youtube_link']=$req->youtube_video_link;
-     
+
 
         if($req->image != NULL)
         {
@@ -1788,8 +1930,8 @@ class AdminController extends Controller
 
                 'image'=>'mimes:jpeg,jpg,png',
             ]);
-         
-         
+
+
             $uploadedfile=$req->file('image');
             $new_image=rand().'.'.$uploadedfile->getClientOriginalExtension();
             $uploadedfile->move(public_path('/assets/images/'),$new_image);
@@ -1797,7 +1939,7 @@ class AdminController extends Controller
 
 
         }
-        
+
         if($req->image2 != NULL)
         {
 
@@ -1805,8 +1947,8 @@ class AdminController extends Controller
 
                 'image'=>'mimes:jpeg,jpg,png',
             ]);
-         
-         
+
+
             $uploadedfile=$req->file('image');
             $new_image2=rand().'.'.$uploadedfile->getClientOriginalExtension();
             $uploadedfile->move(public_path('/assets/images/'),$new_image2);
@@ -1814,7 +1956,7 @@ class AdminController extends Controller
 
 
         }
-        
+
         if($req->image3 != NULL)
         {
 
@@ -1822,8 +1964,8 @@ class AdminController extends Controller
 
                 'image'=>'mimes:jpeg,jpg,png',
             ]);
-         
-         
+
+
             $uploadedfile=$req->file('image');
             $new_image3=rand().'.'.$uploadedfile->getClientOriginalExtension();
             $uploadedfile->move(public_path('/assets/images/'),$new_image3);
@@ -1831,7 +1973,7 @@ class AdminController extends Controller
 
 
         }
-        
+
         if($req->image4 != NULL)
         {
 
@@ -1839,8 +1981,8 @@ class AdminController extends Controller
 
                 'image'=>'mimes:jpeg,jpg,png',
             ]);
-         
-         
+
+
             $uploadedfile=$req->file('image');
             $new_image4=rand().'.'.$uploadedfile->getClientOriginalExtension();
             $uploadedfile->move(public_path('/assets/images/'),$new_image4);

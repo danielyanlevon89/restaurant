@@ -26,7 +26,7 @@
             <th style="text-align:center;width:10%">Price</th>
             <th style="width:8%">Quantity</th>
             <th style="width:22%" class="text-center">Subtotal</th>
-            
+
         </tr>
     </thead>
     <tbody>
@@ -38,29 +38,29 @@
                 <td>{{$product->invoice_no}}</td>
                 <td>{{$product->name}}</td>
                 <td>{{$product->pay_method}}</td>
-                <td style="text-align:center">৳{{$product->price}}</td>
+                <td style="text-align:center">{{$product->price}} Руб</td>
                 <td style="text-align:center">{{$product->quantity}}</td>
-                <td style="text-align:center">৳{{$product->subtotal}}</td>
-              
+                <td style="text-align:center">{{$product->subtotal}} Руб</td>
+
             </tr>
         @endforeach
     </tbody>
     <tfoot>
         <tr>
-        @php 
-        
-        
+        @php
+
+
         $total = $total_price;
-        
+
         Session::put('total',$total_price);
-        
+
         @endphp
-            <td colspan="7" class="text-right"><h3><strong>Total ৳{{ $total_price }}</strong></h3></td>
+            <td colspan="7" class="text-right"><h3><strong>Total {{ $total_price }} Руб</strong></h3></td>
         </tr>
         <tr>
             <td colspan="7" class="text-right">
                 <a href="{{ url('/menu') }}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a>
-              
+
             </td>
         </tr>
     </tfoot>
