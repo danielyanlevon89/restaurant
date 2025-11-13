@@ -1,4 +1,4 @@
-<title>MidwayCafe</title>
+<title>Cafe</title>
 <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/images/short.jpg') }}">
 <x-guest-layout>
 
@@ -47,7 +47,7 @@
                 </x-jet-button>
             </div><br>
             <div style="text-align:center">
-                Or, 
+                Or,
                 <u><a href="/register">Register Now</a></u>
             </div>
         </form>

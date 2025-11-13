@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\TelegramNotification;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -288,37 +289,21 @@ class HomeController extends Controller
        $data["body"] = "Your reservation have been Placed Successfully";
 
 
-        /*
-        $files = [
-            public_path('file/sample.pdf'),
-        ];
 
-
-        \Mail::send('mails.ReserveMail', $data, function($message)use($data, $files) {
-            $message->to(Auth::user()->email)
-                    ->subject('Mail from RMS Admin');
-
-            foreach ($files as $file){
-                $message->attach($file);
-            }
-
-        });
-
-        */
 
         $pdf = PDF::loadView('mails.Reserve', $data);
 
-        \Mail::send('mails.Reserve', $data, function($message)use($data, $pdf) {
-            $message->to(Auth::user()->email,Auth::user()->email)
-                    ->subject($data["title"])
-                    ->attachData($pdf->output(), "Reservation Copy.pdf");
-        });
+//        \Mail::send('mails.Reserve', $data, function($message)use($data, $pdf) {
+//            $message->to(Auth::user()->email,Auth::user()->email)
+//                    ->subject($data["title"])
+//                    ->attachData($pdf->output(), "Reservation Copy.pdf");
+//        });
+        $message = "Your reservation have been Placed Successfully";
+
+        (new TelegramNotification())->send($message);
 
 
-
-        return view('Reserve_order');
-
-
+        return view('reserve_order');
 
     }
 

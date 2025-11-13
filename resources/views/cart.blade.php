@@ -128,7 +128,7 @@
         <tr>
             <td colspan="5" class="text-right">
                 <a href="{{ url('/menu') }}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a>
-                <form style="display:inline" method="post" action="{{route('cart.checkout', $total)}}">
+                <form style="display:inline" method="post" action="{{route('cart.checkout')}}">
                     @csrf
                     @if($total_price==0)
                     <button class="btn btn-success" disabled>Checkout</button>

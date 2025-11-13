@@ -8,10 +8,17 @@ use App\Http\Controllers\BkashController;
 use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\SslCommerzPaymentController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\admin\MenuController as AdminMenuController;
 use App\Http\Controllers\admin\ChefController as AdminChefController;
+use App\Http\Controllers\admin\OrderController as AdminOrderController;
+use App\Http\Controllers\admin\InvoiceController as AdminInvoiceController;
+use App\Http\Controllers\admin\ReservationController as AdminReservationController;
+use App\Http\Controllers\admin\CustomizeController as AdminCustomizeController;
+use App\Http\Controllers\admin\BannerController as AdminBannerController;
+use App\Http\Controllers\admin\UserController as AdminUserController;
+use App\Http\Controllers\admin\CouponController as AdminCouponController;
+use App\Http\Controllers\admin\ChargeController as AdminChargeController;
 
 
 /*
@@ -32,7 +39,7 @@ Route::post("/register/confirm",'App\Http\Controllers\HomeController@register')-
 Route::get("/redirects",'App\Http\Controllers\HomeController@redirects');
 
 #Route::get("/menu",'App\Http\Controllers\MenuController@menu');
-Route::get('/menu', [MenuController::class, 'menu'])->name('menu');
+Route::get('/menu/{type?}', [MenuController::class, 'menu'])->name('menu');
 
 Route::get('/trace-my-order', [ShipmentController::class, 'trace'])->name('trace-my-order');
 
@@ -69,10 +76,10 @@ Route::get("/cart", [CartController::class, 'index'])->name('cart');
 
 Route::post('/menu/{product}', [CartController::class, 'store'])->name('cart.store');
 Route::post('/cart/{product}', [CartController::class, 'destroy'])->name('cart.destroy');
-Route::post('/mails/shipped/{total}', [ShipmentController::class, 'place_order'])->name('mails.shipped');
-Route::post('/confirm_place_order/{total}', [ShipmentController::class, 'send'])->name('confirm_place_order');
+Route::post('/shipment', [ShipmentController::class, 'shipment'])->name('shipment');
+Route::post('/confirm_order', [ShipmentController::class, 'send'])->name('confirm_order');
 
-Route::post('/checkout/{total}', [CartController::class, 'checkout'])->name('cart.checkout');
+Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 Route::post('/reserve/confirm', [HomeController::class, 'reservation_confirm'])->name('reserve.confirm');
 
 Route::post('/trace/confirm', [ShipmentController::class, 'trace_confirm'])->name('trace.confirm');
@@ -137,88 +144,51 @@ Route::get('/chef/{id}/edit/', [AdminChefController::class, 'edit'])->name('admi
 Route::get('/chef/{id}/delete/', [AdminChefController::class, 'delete'])->name('admin.chef.delete');
 Route::put('/chef/{id}/update', [AdminChefController::class, 'update'])->name('admin.chef.update');
 
+Route::get('/orders/process', [AdminOrderController::class, 'process'])->name('admin.orders.process');
+Route::get('/orders/cancel', [AdminOrderController::class, 'cancel'])->name('admin.orders.cancel');
+Route::get('/orders/complete', [AdminOrderController::class, 'complete'])->name('admin.orders.complete');
+Route::get('/orders/location', [AdminOrderController::class, 'location'])->name('admin.orders.location');
+Route::get('/orders/incomplete', [AdminOrderController::class, 'incomplete'])->name('admin.orders.incomplete');
+
+Route::get('/invoice/details/{id}', [AdminInvoiceController::class, 'details'])->name('admin.invoice.details');
+Route::post('/invoice/approve/{id}', [AdminInvoiceController::class, 'approve'])->name('admin.invoice.approve');
+Route::get('/invoice/cancel/{id}', [AdminInvoiceController::class, 'cancel'])->name('admin.invoice.cancel');
+Route::get('/invoice/complete/{id}', [AdminInvoiceController::class, 'complete'])->name('admin.invoice.complete');
+Route::post('/invoice/location/edit', [AdminInvoiceController::class, 'edit_order_location'])->name('admin.invoice.location');
+
+Route::get('/reservation', [AdminReservationController::class, 'reservation'])->name('admin.reservation');
+
+Route::get('/customize/edit', [AdminCustomizeController::class, 'edit'])->name('admin.customize.edit');
+Route::post('/customize/save', [AdminCustomizeController::class, 'save'])->name('admin.customize.save');
+
+Route::get('/banners', [AdminBannerController::class, 'index'])->name('admin.banners');
+Route::get('/banner/add', [AdminBannerController::class, 'add'])->name('admin.banner.add');
+Route::post('/banner/create', [AdminBannerController::class, 'create'])->name('admin.banner.create');
+Route::get('/banner/{id}/delete', [AdminBannerController::class, 'delete'])->name('admin.banner.delete');
+Route::get('/banner/{id}/edit', [AdminBannerController::class, 'edit'])->name('admin.banner.edit');
+Route::put('/banner/{id}/update', [AdminBannerController::class, 'update'])->name('admin.banner.update');
+
+Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users');
+Route::get('/user/add', [AdminUserController::class, 'add'])->name('admin.user.add');
+Route::post('/user/create', [AdminUserController::class, 'create'])->name('admin.user.create');
+Route::get('/user/{id}/delete', [AdminUserController::class, 'delete'])->name('admin.user.delete');
+Route::get('/user/{id}/edit', [AdminUserController::class, 'edit'])->name('admin.user.edit');
+Route::put('/user/{id}/update', [AdminUserController::class, 'update'])->name('admin.user.update');
+
+Route::get('/coupons', [AdminCouponController::class, 'index'])->name('admin.coupons');
+Route::get('/coupon/add', [AdminCouponController::class, 'add'])->name('admin.coupon.add');
+Route::post('/coupon/create', [AdminCouponController::class, 'create'])->name('admin.coupon.create');
+Route::get('/coupon/{id}/delete', [AdminCouponController::class, 'delete'])->name('admin.coupon.delete');
+Route::get('/coupon/{id}/edit', [AdminCouponController::class, 'edit'])->name('admin.coupon.edit');
+Route::put('/coupon/{id}/update', [AdminCouponController::class, 'update'])->name('admin.coupon.update');
+
+Route::get('/charges', [AdminChargeController::class, 'index'])->name('admin.charges');
+Route::get('/charge/add', [AdminChargeController::class, 'add'])->name('admin.charge.add');
+Route::post('/charge/create', [AdminChargeController::class, 'create'])->name('admin.charge.create');
+Route::get('/charge/{id}/delete', [AdminChargeController::class, 'delete'])->name('admin.charge.delete');
+Route::get('/charge/{id}/edit', [AdminChargeController::class, 'edit'])->name('admin.charge.edit');
+Route::put('/charge/{id}/update', [AdminChargeController::class, 'update'])->name('admin.charge.update');
 
 
 
-Route::get('/orders/process', [AdminController::class, 'orders_process'])->name('admin.orders.process');
-Route::get('/orders/cancel', [AdminController::class, 'orders_cancel'])->name('admin.orders.cancel');
-Route::get('/orders/complete', [AdminController::class, 'order_complete'])->name('admin.orders.complete');
-Route::get('/orders/location', [AdminController::class, 'order_location'])->name('admin.orders.location');
-Route::get('/orders/incomplete', [AdminController::class, 'order_incomplete'])->name('admin.orders.incomplete');
-
-Route::get('/reservation', [AdminController::class, 'reservation'])->name('admin.reservation');
-
-
-Route::get('/customize', [AdminController::class, 'customize'])->name('admin.customize');
-Route::get('/customize/edit', [AdminController::class, 'customize_edit'])->name('admin.customize.edit');
-Route::post('/customize/save', [AdminController::class, 'customize_save'])->name('admin.customize_save');
-
-Route::get('/banners', [AdminController::class, 'banner'])->name('admin.banners');
-Route::get('/banner/add', [AdminController::class, 'banner_add'])->name('admin.banner.add');
-
-
-
-
-
-
-
-
-
-
-
-Route::get('/admin/coupon', [AdminController::class, 'coupon_show'])->name('/admin/coupon');
-Route::get('/admin/show', [AdminController::class, 'admin_show'])->name('/admin/show');
-Route::get('/customer', [AdminController::class, 'user_show'])->name('/customer');
-Route::get('/admin/charge', [AdminController::class, 'charge'])->name('/admin/charge');
-
-
-Route::post('/menu/add/process', [AdminController::class, 'menu_add_process'])->name('/menu/add/process');
-Route::post('/chef/add/process', [AdminController::class, 'chef_add_process'])->name('/chef/add/process');
-
-
-Route::get('/menu/delete/{id}', [AdminController::class, 'menu_delete_process'])->name('/menu/delete');
-Route::get('/chef/delete/{id}', [AdminController::class, 'chef_delete_process'])->name('/chef/delete');
-
-
-Route::get('/menu/edit/{id}', [AdminController::class, 'menu_edit'])->name('/menu/edit');
-Route::get('/chef/edit/{id}', [AdminController::class, 'chef_edit'])->name('/chef/edit');
-
-Route::post('/menu/edit/process/{id}', [AdminController::class, 'menu_edit_process'])->name('/menu/edit/process');
-Route::post('/edit/chef/process/{id}', [AdminController::class, 'chef_edit_process'])->name('/edit/chef/process');
-Route::post('/invoice/approve/{id}', [AdminController::class, 'invoice_approve'])->name('/invoice/approve');
-Route::get('/invoice/details/{id}', [AdminController::class, 'invoice_details'])->name('invoice/details');
-Route::get('/invoice/cancel-order/{id}', [AdminController::class, 'invoice_cancel'])->name('/invoice/cancel-order');
-
-
-Route::get('/invoice/complete/{id}', [AdminController::class, 'invoice_complete'])->name('invoice/complete');
-
-
-Route::post('/invoice/location/edit', [AdminController::class, 'edit_order_location'])->name('/invoice/location/edit');
-Route::get('/delivery-boy', [AdminController::class, 'delivery_boy'])->name('/delivery-boy');
-
-
-Route::get('/admin-add', [AdminController::class, 'add_admin'])->name('/admin-add');
-Route::get('/add/delivery_boy', [AdminController::class, 'add_delivery_boy'])->name('/add/delivery_boy');
-Route::post('/admin-add-process', [AdminController::class, 'add_admin_process'])->name('/admin-add-process');
-Route::get('/admin/delete/{id}', [AdminController::class, 'delete_admin'])->name('/admin/delete');
-Route::get('/admin/edit/{id}', [AdminController::class, 'edit_admin'])->name('/admin/edit');
-Route::post('/admin-edit-process/{id}', [AdminController::class, 'edit_admin_process'])->name('/admin-edit-process');
-Route::post('/add-delivery-boy-process', [AdminController::class, 'add_delivery_boy_process'])->name('/add-delivery-boy-process');
-Route::get('/delivery_boy/delete/{id}', [AdminController::class, 'delete_delivery_boy'])->name('/delivery_boy/delete');
-Route::get('/delivery_boy/edit/{id}', [AdminController::class, 'edit_delivery_boy'])->name('/delivery_boy/edit');
-Route::post('/edit_delivery_boy_process/{id}', [AdminController::class, 'edit_delivery_boy_process'])->name('/edit_delivery_boy_process');
-Route::post('/banner/add/process', [AdminController::class, 'banner_add_process'])->name('/banner/add/process');
-Route::get('/admin/banner/edit/{id}', [AdminController::class, 'banner_edit'])->name('/admin/banner/edit');
-Route::post('/banner/edit/process/{id}', [AdminController::class, 'banner_edit_process'])->name('/banner/edit/process');
-Route::get('/admin/banner/delete/{id}', [AdminController::class, 'banner_delete_process'])->name('/admin/banner/delete');
-Route::get('/add/coupon', [AdminController::class, 'add_coupon'])->name('/add/coupon');
-Route::post('/coupon-add-process', [AdminController::class, 'add_coupon_process'])->name('/coupon-add-process');
-Route::get('/admin/coupon/delete/{id}', [AdminController::class, 'delete_coupon'])->name('/admin/coupon/delete');
-Route::get('/admin/coupon/edit/{id}', [AdminController::class, 'edit_coupon'])->name('/admin/coupon/edit');
-Route::post('/coupon-edit-process/{id}', [AdminController::class, 'edit_coupon_process'])->name('/coupon-edit-process');
-Route::get('/add/charge', [AdminController::class, 'add_charge'])->name('/add/charge');
-Route::post('/charge-add-process', [AdminController::class, 'add_charge_process'])->name('/charge-add-process');
-Route::get('/admin/charge/delete/{id}', [AdminController::class, 'delete_charge'])->name('/admin/charge/delete');
-Route::get('/admin/charge/edit/{id}', [AdminController::class, 'edit_charge'])->name('/admin/edit/delete');
-Route::post('/charge-edit-process/{id}', [AdminController::class, 'edit_charge_process'])->name('/charge-edit-process');
 });

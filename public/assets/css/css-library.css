@@ -533,7 +533,6 @@ header
     width: 100%;
   }
   .header-area {
-    background-color: #f7f7f7;
     padding: 0px 15px;
     height: 100px;
     box-shadow: none;
@@ -623,16 +622,19 @@ header
   }
 }
 
-
+@media (max-width: 991.98px) {
+    .navbar-collapse.show {
+        position: static;
+        width: 100%;
+        background-color: #fff;
+        z-index: 10;
+    }
+}
 /*
 ---------------------------------------------
 banner
 ---------------------------------------------
 */
-
-#top {
-  padding-top: 100px;
-}
 
 #top .col-lg-4,
 #top .col-lg-8 {
@@ -885,11 +887,7 @@ menu
 ---------------------------------------------
 */
 
-#menu {
-  margin-top: 120px;
-  background-color: #fffafa;
-  padding: 120px 0px;
-}
+
 
 #menu .section-heading {
   margin-bottom: 80px;
@@ -1551,7 +1549,6 @@ responsive
 
 @media (max-width: 992px) {
   #top {
-    padding-top: 100px;
     height: auto;
   }
   .header-area .main-nav .nav li.submenu:after {

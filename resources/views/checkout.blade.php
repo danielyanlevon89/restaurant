@@ -6,28 +6,32 @@
     <br>
     <br>
     <br>
-    <h1>Your order amount is {{$total}} Руб</h1><br>
+    <h1>Your order amount is {{$total_price}} Руб</h1><br>
     <h2 style="color:#FB5849">Choose a payment method</h2><br>
-    <input ng-model="myVar" type="radio" id="cod" name="cod" value="cod">
-    <label for="cod"><img style="max-width:150px;" src="{{ asset('assets/images/cod.png')}}"></label><br>
-    <input ng-model="myVar" type="radio" id="bkash" name="bkash" value="bkash">
-    <label for="bkash"><img style="max-width:150px;"  src="{{ asset('assets/images/bkash.png')}}"></label><br><br><br>
+
     <div ng-switch="myVar">
         @if (Auth::check())
-            <div ng-switch-when="cod">
+            <div ng-switch-when="cod" style="float:left;margin-right: 10px">
 
-                <form style="display:inline"  method="post" action="{{route('mails.shipped', $total)}}">
+                <form style="display:inline"  method="post" action="{{route('shipment')}}">
                 @csrf
+                    <img style="max-width:150px;" src="{{ asset('assets/images/cod.png')}}">
+                    <br>
+                    <br>
                     <input class="btn btn-success" type="submit" value="Place Order">
                 </form>
             </div>
             <div ng-switch-when="bkash">
             <?php
-                Session::put('total',$total);
+                Session::put('total',$total_price);
             ?>
+                <img style="max-width:150px;"  src="{{ asset('assets/images/bkash.png')}}">
+                <br>
+                <br>
+
             <a href="/ssl/pay"><input class="btn btn-success" type="submit" value="Pay with Online"></a>
 
-                @include('bkash-script')
+{{--                @include('bkash-script')--}}
             </div>
         @else
             <div ng-switch-when="cod">

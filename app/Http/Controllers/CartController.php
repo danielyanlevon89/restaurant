@@ -9,9 +9,9 @@ use Auth;
 
 class CartController extends Controller
 {
-    
-    
-    
+
+
+
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +21,6 @@ class CartController extends Controller
     {
         if(!Auth::user())
         {
-
             return redirect()->route('login');
 
         }
@@ -29,76 +28,40 @@ class CartController extends Controller
         $carts_amount = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','no')->count();
         $discount_price=0;
         $without_discount_price = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','no')->sum('subtotal');
-
         $coupon_code=NULL;
-        
         if($carts_amount>0)
         {
             foreach($carts as $cart)
             {
-
                 $coupon_code=$cart->coupon_id;
-
-
-
             }
 
          }
 
          if($coupon_code!=NULL)
          {
-
-
             $validate=DB::table('coupons')->where('code',$coupon_code)->value('validate');
-
             $today=date("Y-m-d");
-    
             if($validate < $today)
             {
-    
-
                 $total_price = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','no')->sum('subtotal');
-
-    
-    
-    
             }
             else
             {
-
                 $total_price = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','no')->sum('subtotal');
-
-            
                 $coupon_code_price=DB::table('coupons')->where('code',$coupon_code)->value('percentage');
-    
                 $discount_price=(($total_price*$coupon_code_price)/100);
                 $discount_price=floor($discount_price);
-    
-    
                 $total_price = $total_price - $discount_price;
-
-
-
             }
-
-
-
-          
-
 
          }
          else
          {
-
             $total_price = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','no')->sum('subtotal');
-
-
          }
          $extra_charge=DB::table('charges')->get();
          $total_extra_charge=DB::table('charges')->sum('price');
-
-
-       
         return view("cart", compact('carts','total_price','discount_price','without_discount_price','extra_charge','total_extra_charge'));
     }
 
@@ -109,7 +72,7 @@ class CartController extends Controller
      */
     public function create()
     {
-        
+
     }
 
     /**
@@ -127,13 +90,13 @@ class CartController extends Controller
             return redirect()->route('login');
 
         }
-        
+
         $product = Product::find($id);
         $quantity = $request->number;
         if (Cart::where('product_id', '=', $id)->where('user_id',Auth::user()->id)->where('product_order','no')->exists()) {
             $quant = DB::table('carts')->where('product_id', '=', $id)->where('user_id',Auth::user()->id)->where('product_order','no')->value('quantity');
-            
-          
+
+
             $quantity = $quantity + (int) $quant;
 
             DB::table('carts')->where('product_id', '=', $id)->where('user_id',Auth::user()->id)->where('product_order','no')->update([
@@ -142,8 +105,8 @@ class CartController extends Controller
             ]);
         }else{
             DB::table('carts')->insert([
-                'product_id' => $product->id, 
-                'user_id'=> Auth::user()->id,   
+                'product_id' => $product->id,
+                'user_id'=> Auth::user()->id,
                 'product_order' => "no",
                 'shipping_address' => 'N/A',
                 'name' => $product->name,
@@ -209,8 +172,50 @@ class CartController extends Controller
 
 
 
-    public function checkout($total)
+    public function checkout()
     {
-        return view("checkout", compact('total'));
+
+        if(!Auth::user())
+        {
+            return redirect()->route('login');
+
+        }
+        $carts = Cart::all()->where('user_id',Auth::user()->id)->where('product_order','no');
+        $carts_amount = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','no')->count();
+        $coupon_code=NULL;
+        if($carts_amount>0)
+        {
+            foreach($carts as $cart)
+            {
+                $coupon_code=$cart->coupon_id;
+            }
+
+        }
+
+        if($coupon_code!=NULL)
+        {
+            $validate=DB::table('coupons')->where('code',$coupon_code)->value('validate');
+            $today=date("Y-m-d");
+            if($validate < $today)
+            {
+                $total_price = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','no')->sum('subtotal');
+            }
+            else
+            {
+                $total_price = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','no')->sum('subtotal');
+                $coupon_code_price=DB::table('coupons')->where('code',$coupon_code)->value('percentage');
+                $discount_price=(($total_price*$coupon_code_price)/100);
+                $discount_price=floor($discount_price);
+                $total_price = $total_price - $discount_price;
+            }
+
+        }
+        else
+        {
+
+            $total_price = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','no')->sum('subtotal');
+        }
+
+        return view("checkout", compact('total_price'));
     }
 }

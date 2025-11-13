@@ -2,12 +2,11 @@
 
 @section('page-content')
 
-<br><br><br><br>
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-<table class="table table-striped table-bordered" style="margin:10%; max-width:80%;">
+<table class="table table-striped table-bordered" style="margin:0 auto; max-width:80%;">
         @foreach($products as $product)
             <tr>
                 <td>
@@ -74,7 +73,7 @@
             <br>
 
                         @if($product->available=="Stock")
-                        <input type="number" name="number" style="width:50px;" id="myNumber" value="1">
+                        <input type="number" name="number" style="width:50px;" id="myNumber" min="1" value="1">
                         <button class="btn btn-success">Add to Cart</button>
                         @endif
                         @if($product->available!="Stock") <p class="btn btn-danger">Out of Stock</p>

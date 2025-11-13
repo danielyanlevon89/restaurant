@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  
+
   #APP Service
   app:
     build:
@@ -71,22 +71,6 @@ services:
           MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
         networks:
            - app-network
-
-  #vite
-  vite:
-      image: node:latest
-      container_name: vite
-      entrypoint: /bin/sh
-      ports:
-        - '${VITE_PORT}:${VITE_PORT}'
-      working_dir: /var/www
-      volumes:
-        - type: bind
-          source: ./
-          target: /var/www
-      tty: true
-      networks:
-                - app-network
 
 
 #Docker Networks

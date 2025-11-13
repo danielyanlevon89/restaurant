@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\TelegramNotification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
@@ -51,47 +52,29 @@ class ShipmentController extends Controller
     public function store(Request $request)
     {
         $order = Cart::all();
- 
+
         // Ship the order...
- 
+
         Mail::to($request->user())->send(new OrderShipped($order));
     }
-    public function place_order($total)
+    public function shipment()
     {
-
-        return view('place_order',compact('total'));
+        $total = Session::get('total');
+        return view('shipment',compact('total'));
 
 
     }
 
 
-    public function send(Request $request,$total)
-    {    
+    public function send(Request $request)
+    {
 
         $data=array();
 
         $invoice = substr(str_shuffle("0123456789abcdefghijklmnopqrstvwxyz"), 0, 8);
-        /*
-        $order_list = DB::table('carts')->where('product_order','yes')->get();
 
 
-        foreach($order_list as $order)
-        {
 
-            while($order->invoice_no != $invoice)
-            {
-
-                $invoice = substr(str_shuffle("0123456789abcdefghijklmnopqrstvwxyz"), 0, 8);
-
-
-            }
-
-
-        }
-        */
-        //return $invoice;
-        
-        
         $data['shipping_address']=$request->address;
         $data['product_order']="yes";
         $data['invoice_no']=$invoice;
@@ -100,19 +83,19 @@ class ShipmentController extends Controller
         $data['purchase_date']=date("Y-m-d");
 
 
-      
+
 
 
         $products = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','no')->get();
 
         $total = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','no')->sum('subtotal');
-        
+
         $total = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','no')->sum('subtotal');
         $carts_amount = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','no')->count();
         $without_discount_price=$total;
         $discount_price=0;
         $coupon_code=NULL;
-        
+
         if($carts_amount>0)
         {
             foreach($products as $cart)
@@ -132,7 +115,7 @@ class ShipmentController extends Controller
 
             $total = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','no')->sum('subtotal');
 
-            
+
             $coupon_code_price=DB::table('coupons')->where('code',$coupon_code)->value('percentage');
 
             $coupon_code_price=floor($coupon_code_price);
@@ -142,7 +125,7 @@ class ShipmentController extends Controller
 
 
             $total = $total - $discount_price;
-      
+
 
 
          }
@@ -155,37 +138,11 @@ class ShipmentController extends Controller
          }
 
         $carts = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','no')->update($data);
-        /*
-        $details = [
-            'title' => 'Mail from RMS Admin',
-            'body' => 'Your order have been Placed Successfully.Your order Invoice no - '.$invoice. 'ok',
-        ];
-       
-        \Mail::to(Auth::user()->email)->send(new \App\Mail\PaymentMail($details));
 
-        */
 
         $data["title"] = "From RMS admin";
         $data["body"] = "Your reservation have been Placed Successfully";
- 
- 
-         /*
-         $files = [
-             public_path('file/sample.pdf'),
-         ];
-   
-         
-         \Mail::send('mails.ReserveMail', $data, function($message)use($data, $files) {
-             $message->to(Auth::user()->email)
-                     ->subject('Mail from RMS Admin');
-  
-             foreach ($files as $file){
-                 $message->attach($file);
-             }
-             
-         });
- 
-         */
+
 
         $extra_charge=DB::table('charges')->get();
         $total_extra_charge=DB::table('charges')->sum('price');
@@ -205,41 +162,41 @@ class ShipmentController extends Controller
 
          if($invoice==NULL)
          {
-  
+
               $invoice="RMS";
-  
-  
+
+
          }
 
 
         // return $invoice;
-  
+
 
          $qrcode = base64_encode(QrCode::format('svg')->size(100)->errorCorrection('H')->generate('RMS Verified'));
          $pdf = PDF::loadView('mails.PaymentMail', $data);
 
          Session::put('qrcode',$qrcode);
 
-        
-        //
-        //return view('mails.PaymentMail');
+        $message = "order created";
+
+        (new TelegramNotification())->send($message);
 
         if($carts)
         {
 
-            \Mail::send('mails.PaymentMail', $data, function($message)use($data, $pdf) {
-                $message->to(Auth::user()->email,Auth::user()->email)
-                        ->subject($data["title"])
-                        ->attachData($pdf->output(), "Order Copy.pdf");
-            });
+//            \Mail::send('mails.PaymentMail', $data, function($message)use($data, $pdf) {
+//                $message->to(Auth::user()->email,Auth::user()->email)
+//                        ->subject($data["title"])
+//                        ->attachData($pdf->output(), "Order Copy.pdf");
+//            });
 
 
 
         }
-   
-     
-       
-        return view('Confirm_order',compact('invoice','products','total'));
+
+
+
+        return view('confirm_order',compact('invoice','products','total'));
     }
 
 
@@ -298,12 +255,12 @@ class ShipmentController extends Controller
 
         }
 
-        
+
         $carts = Cart::all()->where('user_id',Auth::user()->id)->where('product_order','!=','no');
         $total_price = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','!=','no')->sum('subtotal');
         return view("my_order", compact('carts','total_price'));
 
-        
+
 
     }
     public function trace()
@@ -316,12 +273,12 @@ class ShipmentController extends Controller
 
         }
 
-        
+
         $carts = Cart::all()->where('user_id',Auth::user()->id)->where('product_order','yes');
         $total_price = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','no')->sum('subtotal');
         return view("trace", compact('carts','total_price'));
 
-        
+
 
     }
 
@@ -352,14 +309,14 @@ class ShipmentController extends Controller
 
         }
 
-        
+
         $carts = Cart::all()->where('user_id',Auth::user()->id)->where('product_order','!=','no')->where('invoice_no',$req->invoice);
         $total_price = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','!=','no')->where('invoice_no',$req->invoice)->sum('subtotal');
         $carts_amount = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','!=','no')->where('invoice_no',$req->invoice)->count();
         $without_discount_price=$total_price;
         $discount_price=0;
         $coupon_code=NULL;
-        
+
         if($carts_amount>0)
         {
             foreach($carts as $cart)
@@ -379,7 +336,7 @@ class ShipmentController extends Controller
 
             $total_price = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','!=','no')->where('invoice_no',$req->invoice)->sum('subtotal');
 
-            
+
             $coupon_code_price=DB::table('coupons')->where('code',$coupon_code)->value('percentage');
 
             $coupon_code_price=floor($coupon_code_price);
@@ -389,7 +346,7 @@ class ShipmentController extends Controller
 
 
             $total_price = $total_price - $discount_price;
-      
+
 
 
          }
@@ -411,7 +368,7 @@ class ShipmentController extends Controller
 
 
     }
-    
+
 
     public function coupon_apply(Request $req)
     {
@@ -462,7 +419,7 @@ class ShipmentController extends Controller
 
 
         }
-        
+
 
     }
 

@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <title>Midway Dine - Your Favourite Foods</title>
+    <title>Your Favourite Foods</title>
 
     <!-- Additional CSS Files -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap.min.css')}}">
@@ -24,9 +24,9 @@
 
     <link rel="stylesheet" href="{{ asset('assets/css/lightbox.css')}}">
 
-    <script src="{{ asset('assets/js/angular.min.js')}}"></script>
-    <script src="{{ asset('assets/js/bKash-checkout.js')}}"></script>
-    <script src="{{ asset('assets/js/bKash-checkout-sandbox.js')}}"></script>
+{{--    <script src="{{ asset('assets/js/angular.min.js')}}"></script>--}}
+{{--    <script src="{{ asset('assets/js/bKash-checkout.js')}}"></script>--}}
+{{--    <script src="{{ asset('assets/js/bKash-checkout-sandbox.js')}}"></script>--}}
 
     </head>
 
@@ -44,101 +44,88 @@
 
 
     <!-- ***** Header Area Start ***** -->
-    <header class="header-area" style="z-index:1000">
+    <header class="header-area">
         <div class="container">
-                    <nav class="main-nav">
-                        <!-- ***** Logo Start ***** -->
-                        <a href="{{url('/')}}" class="logo">
-                            <img width="100px" src="{{ asset('assets/images/logo.png')}}">
-                        </a>
-                        <!-- ***** Logo End ***** -->
-                        <!-- ***** Menu Start ***** -->
-                        <ul class="nav">
-                            <li class="scroll-to-section"><a href="/">Home</a></li>
-                            <li class="scroll-to-section"><a href="/#about">About</a></li>
 
-                            <li class="scroll-to-section"><a href="/#menu">Menu</a></li>
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <a href="{{url('/')}}" class="logo navbar-brand">
+                    <img width="100px" src="{{ asset('assets/images/logo.png')}}">
+                </a>
 
-                            <li class="scroll-to-section"><a href="/trace-my-order">Trace Order</a></li>
+                <!-- Toggler/collapsible button -->
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#adminNavbar" aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-                            <li class="scroll-to-section"><a href="/my-order">My Order</a></li>
+                <!-- Navbar links -->
+                <div class="collapse navbar-collapse" id="adminNavbar">
+                    <ul class="navbar-nav mr-auto">
+                        <!-- Simple menu item -->
+                        <li class="nav-item scroll-to-section">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item scroll-to-section">
+                            <a class="nav-link" href="/#about">About</a>
+                        </li>
+                        <!-- Parent menu with child dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="/menu" id="menu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Menu
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="menu">
+                                <a class="dropdown-item" href="/menu/breakfast">breakfast</a>
+                                <a class="dropdown-item" href="/menu/dinner">dinner</a>
+                                <a class="dropdown-item" href="/menu/lunch">lunch</a>
+                            </div>
+                        </li>
 
-                            <li class="scroll-to-section"><a href="/#chefs">Chefs</a></li>
-                            <li class="scroll-to-section"><a href="/#reservation">Contact Us</a></li>
-                            <li><a href="/cart"><i class="fa fa-shopping-cart"></i></a></li>
+                        <li class="nav-item scroll-to-section">
+                            <a class="nav-link" href="/trace-my-order">Trace Order</a>
+                        </li>
+                        <li class="nav-item scroll-to-section">
+                            <a class="nav-link" href="/#chefs">Chefs</a>
+                        </li>
+                        <li class="nav-item scroll-to-section">
+                            <a class="nav-link" href="/#reservation">Reservation</a>
+                        </li>
+                        <li class="nav-item scroll-to-section">
+                            <a class="nav-link" href="/cart"><i class="fa fa-shopping-cart"></i></a>
+                        </li>
+                        <?php
+                        if(Auth::user())
+                        {
+                            $cart_amount=DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','no')->count();
+                        }
+                        else
+                        {
+                            $cart_amount=0;
+                        }
+                        ?>
+                        <span class='badge d-none d-md-block' id='lblCartCount'> {{ $cart_amount }} </span>
 
 
-                            <?php
 
-                                if(Auth::user())
-                                {
-
-                                    $cart_amount=DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','no')->count();
-
-
-                                }
-                                else
-                                {
-
-                                    $cart_amount=0;
-
-                                }
-
-
-                            ?>
-
-
-                            <span class='badge badge-warning' id='lblCartCount'> {{ $cart_amount }} </span>
-
-                            <style>
-
-
-                                .badge {
-                                padding-left: 9px;
-                                padding-right: 9px;
-                                padding-top:10px;
-                                -webkit-border-radius: 9px;
-                                -moz-border-radius: 9px;
-                                border-radius: 9px;
-                                height:16px;
-                                text-align:center;
-                                }
-
-                                .label-warning[href],
-                                .badge-warning[href] {
-                                background-color: #c67605;
-                                }
-                                #lblCartCount {
-                                    font-size: 12px;
-                                    background: #ff0000;
-                                    color: #fff;
-                                    padding: 0 5px;
-                                    vertical-align: top;
-                                    margin-left: -10px;
-                                }
-                            </style>
-                            <li>
-                                @if (Route::has('login'))
-                                <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
-                                    @auth
-                                        <li style="margin-top:-13px;">
-                                            <x-app-layout> </x-app-layout>
-                                        </li>
-                                    @else
-                                      <li>
-                                        <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Log in</a>
-                                      </li>
-                                        @if (Route::has('register'))
-                                            <li><a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 underline">Register</a> </li>
-                                        @endif
-                                    @endauth
-                                </div>
-                                @endif
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        @auth
+                            <li style="margin-top:-13px;">
+                                <x-app-layout> </x-app-layout>
                             </li>
-                        </ul>
+                        @else
+                            <li class="nav-item scroll-to-section float-right">
+                                <a class="nav-link" href="/login">Log in</a>
+                            </li>
+                            @if (Route::has('register'))
+                                <li class="nav-item scroll-to-section">
+                                    <a class="nav-link" href="/register">Register</a>
+                                </li>
+                            @endif
+                        @endauth
+                    </ul>
 
-                        <!-- ***** Menu End ***** -->
-                    </nav>
+                </div>
+            </nav>
+
         </div>
     </header>
     <!-- ***** Header Area End ***** -->
@@ -179,7 +166,7 @@
     <script src="{{ asset('assets/js/jquery-2.1.0.min.js')}}"></script>
 
     <!-- Bootstrap -->
-    <script src="{{ asset('assets/js/popper.js')}}"></script>
+{{--    <script src="{{ asset('assets/js/popper.js')}}"></script>--}}
     <script src="{{ asset('assets/js/bootstrap.min.js')}}"></script>
 
     <!-- Plugins -->
@@ -187,9 +174,9 @@
     <script src="{{ asset('assets/js/accordions.js')}}"></script>
     <script src="{{ asset('assets/js/datepicker.js')}}"></script>
     <script src="{{ asset('assets/js/scrollreveal.min.js')}}"></script>
-    <script src="{{ asset('assets/js/waypoints.min.js')}}"></script>
-    <script src="{{ asset('assets/js/jquery.counterup.min.js')}}"></script>
-    <script src="{{ asset('assets/js/imgfix.min.js')}}"></script>
+{{--    <script src="{{ asset('assets/js/waypoints.min.js')}}"></script>--}}
+{{--    <script src="{{ asset('assets/js/jquery.counterup.min.js')}}"></script>--}}
+{{--    <script src="{{ asset('assets/js/imgfix.min.js')}}"></script>--}}
     <script src="{{ asset('assets/js/slick.js')}}"></script>
     <script src="{{ asset('assets/js/lightbox.js')}}"></script>
     <script src="{{ asset('assets/js/isotope.js')}}"></script>

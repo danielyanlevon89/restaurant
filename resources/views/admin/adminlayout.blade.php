@@ -4,12 +4,8 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    @if(Auth::user()->usertype != 2)
+
     <title>Admin Panel</title>
-    @endif
-    @if(Auth::user()->usertype == 2)
-    <title>User Panel</title>
-    @endif
     <!-- plugins:css -->
     <link rel="stylesheet" href="{{asset('admin/assets//vendors/mdi/css/materialdesignicons.min.css')}}">
     <link rel="stylesheet" href="{{asset('admin/assets//vendors/css/vendor.bundle.base.css')}}">
@@ -35,12 +31,7 @@
       <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-        @if(Auth::user()->usertype != 2)
           <a class="sidebar-brand brand-logo" href="/redirects" style="color:white;text-decoration:none;">Admin Panel</a>
-        @endif
-        @if(Auth::user()->usertype == 2)
-          <a class="sidebar-brand brand-logo" href="/redirects" style="color:white;text-decoration:none;">User Panel</a>
-        @endif
           <a class="sidebar-brand brand-logo-mini" href="index.html"><img src="{{asset('admin/assets//images/logo-mini.svg')}}" alt="logo" /></a>
         </div>
         <ul class="nav">
@@ -54,13 +45,10 @@
                 <div class="profile-name">
                   <h5 class="mb-0 font-weight-normal">{{ Auth::user()->name }}</h5>
                   @if(Auth::user()->usertype == 1)
-                  <span> Super Admin</span>
-                  @endif
-                  @if(Auth::user()->usertype == 3)
-                  <span>Sub Admin</span>
+                  <span>Admin</span>
                   @endif
                   @if(Auth::user()->usertype == 2)
-                  <span>Delivery Boy</span>
+                  <span>Driver</span>
                   @endif
                 </div>
               </div>
@@ -111,13 +99,13 @@
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
-          @if(Auth::user()->usertype != 2)
+
           <li class="nav-item menu-items">
               <a class="nav-link" href="{{route('admin.menus')}}">
               <span class="menu-icon">
                 <i class="mdi mdi-food"></i>
               </span>
-              <span class="menu-title">Food Menu</span>
+              <span class="menu-title">Menu</span>
             </a>
           </li>
 
@@ -130,7 +118,7 @@
               <span class="menu-title">Chefs</span>
             </a>
           </li>
-          @endif
+
 
           <li class="nav-item menu-items">
             <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
@@ -156,24 +144,7 @@
               </ul>
             </div>
           </li>
-          <!--
-          <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-              <span class="menu-icon">
-                <i class="mdi mdi-food"></i>
-              </span>
-              <span class="menu-title">Food Menu</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="ui-basic">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">Add Menu</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Update Menu</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Delete Menu</a></li>
-              </ul>
-            </div>
-          </li>
-          -->
+
 
           <li class="nav-item menu-items">
               <a class="nav-link" href="{{route('admin.reservation')}}">
@@ -183,13 +154,13 @@
               <span class="menu-title">Reservation</span>
             </a>
           </li>
-          @if(Auth::user()->usertype == 1)
+
           <li class="nav-item menu-items">
               <a class="nav-link" href="{{route('admin.customize.edit')}}">
               <span class="menu-icon">
                 <i class="mdi mdi-settings"></i>
               </span>
-              <span class="menu-title">Customize Template</span>
+              <span class="menu-title">About Us</span>
             </a>
           </li>
           <li class="nav-item menu-items">
@@ -202,51 +173,24 @@
             </a>
             <div class="collapse" id="ui-basic2">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="/admin/add/banner">Add Banners</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/banner/all">All Banners</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{route('admin.banner.add')}}">Add Banners</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{route('admin.banners')}}">All Banners</a></li>
               </ul>
             </div>
           </li>
 
           <li class="nav-item menu-items">
-            <a class="nav-link" href="/admin/show">
+            <a class="nav-link" href="{{route('admin.users')}}">
               <span class="menu-icon">
                 <i class="mdi mdi-account-multiple-plus"></i>
               </span>
-              <span class="menu-title">Admin</span>
-            </a>
-          </li>
-          @endif
-
-
-          <li class="nav-item menu-items">
-              <a class="nav-link" href="/admin/customer">
-              <span class="menu-icon">
-                <i class="mdi mdi-account-plus"></i>
-              </span>
-              <span class="menu-title">Customer</span>
+              <span class="menu-title">Users</span>
             </a>
           </li>
 
-          @if(Auth::user()->usertype == 1)
-
 
           <li class="nav-item menu-items">
-            <a class="nav-link" href="/delivery-boy">
-              <span class="menu-icon">
-                <i class="mdi mdi-account-plus"></i>
-              </span>
-              <span class="menu-title">Delivery Boy</span>
-            </a>
-          </li>
-
-          @endif
-
-
-          @if(Auth::user()->usertype != 2)
-
-          <li class="nav-item menu-items">
-            <a class="nav-link" href="/admin/coupon">
+            <a class="nav-link" href="{{route('admin.coupons')}}">
               <span class="menu-icon">
                 <i class="mdi mdi-account-card-details"></i>
               </span>
@@ -255,7 +199,7 @@
           </li>
 
           <li class="nav-item menu-items">
-            <a class="nav-link" href="/admin/charge">
+            <a class="nav-link" href="{{route('admin.charges')}}">
               <span class="menu-icon">
                 <i class="mdi mdi-bank"></i>
               </span>
@@ -263,7 +207,6 @@
             </a>
           </li>
 
-          @endif
 
 
         </ul>
@@ -349,7 +292,7 @@
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
                   <h6 class="p-3 mb-0">Profile</h6>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item preview-item" href="user/profile">
+                  <a class="dropdown-item preview-item" href="/user/profile">
                     <div class="preview-thumbnail">
                       <div class="preview-icon bg-dark rounded-circle">
                         <i class="mdi mdi-settings text-success"></i>
@@ -395,7 +338,7 @@
           <!-- partial:partials/_footer.html -->
           <footer class="footer">
             <div class="d-sm-flex justify-content-center justify-content-sm-between">
-              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © RMS  2022</span>
+              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright  2025</span>
 
                 <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> <a href="/" target="_blank">Go to Client Section</a></span>
             </div>

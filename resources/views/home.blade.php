@@ -9,10 +9,9 @@
                 <div class="col-lg-4">
                     <div class="left-content">
                         <div class="inner-content">
-                            <h3>MidwayCafe</h3>
                             <h4>THE BEST EXPERIENCE</h4>
                             <div class="main-white-button scroll-to-section">
-                                <a href="#reservation"><h2>Make A Reservation</h2></a>
+                                <a href="#reservation"><h5>Make A Reservation</h5></a>
                             </div>
                         </div>
                     </div>
@@ -30,8 +29,6 @@
                           </div>
 
                         @endforeach
-                          <!-- // Item -->
-
                         </div>
                     </div>
                 </div>
@@ -583,7 +580,7 @@
             <div class="row">
                 <div class="col-lg-4">
                     <div class="section-heading" >
-                        <h6>Our Menu</h6>
+                        <h6>Menu</h6>
                         <h2>Our selection of cakes with quality taste</h2>
                     </div>
                 </div>
@@ -757,8 +754,8 @@
                                 <div class="message">
                                     <i class="fa fa-envelope"></i>
                                     <h4>Emails</h4>
-                                    <span><a href="mailto:sajeebchakraborty.cse2000@gmail.com">sajeebchakraborty.cse2000@gmail.com</a><br>
-									<a href="mailto:sajeebcb.cseru@gmail.com">sajeebcb.cseru@gmail.com</a><br>
+                                    <span><a href="mailto:levon@gmail.com">levon@gmail.com</a><br>
+									<a href="mailto:sasha@gmail.com">sasha@gmail.com</a><br>
 									</span>
                                 </div>
                             </div>
@@ -771,7 +768,7 @@
                             @csrf
                           <div class="row">
                             <div class="col-lg-12">
-                                <h4>Table Reservation</h4>
+                                <h4>Reservation</h4>
                             </div>
                             <div class="col-lg-6 col-sm-12">
                               <fieldset>

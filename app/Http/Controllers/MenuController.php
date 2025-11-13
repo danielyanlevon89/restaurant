@@ -8,12 +8,27 @@ use App\Models\Product;
 class MenuController extends Controller
 {
 
-    
-    public function menu(){
-        $products = Product::all();
+
+    public function menu($type = null){
+
+        switch ($type) {
+            case 'breakfast':
+                $products = Product::where('meal_type',0)->get();
+               break;
+            case 'lunch':
+                $products = Product::where('meal_type',1)->get();
+                break;
+            case 'dinner':
+                $products = Product::where('meal_type',2)->get();
+                break;
+            default:
+                $products = Product::get();
+                break;
+        }
+
         return view('menu', compact('products'));
     }
-    
+
     /**
      * Display a listing of the resource.
      *
