@@ -60,6 +60,7 @@
                             </tbody>
                         </table>
                     </div>
+                    {{ $reservations->links() }}
                 </div>
             </div>
         </div>

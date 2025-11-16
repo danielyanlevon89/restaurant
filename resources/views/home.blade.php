@@ -98,8 +98,8 @@
                                         <ul>
 
                                           <li><a href='#tabs-1'><img src="{{ asset('assets/images/tab-icon-01.png')}}" alt="">Breakfast</a></li>
-                                          <li><a href='#tabs-2'><img src="{{ asset('assets/images/tab-icon-02.png')}}" alt="">Lunch</a></a></li>
-                                          <li><a href='#tabs-3'><img src="{{ asset('assets/images/tab-icon-03.png')}}" alt="">Dinner</a></a></li>
+                                          <li><a href='#tabs-2'><img src="{{ asset('assets/images/tab-icon-02.png')}}" alt="">Lunch</a></li>
+                                          <li><a href='#tabs-3'><img src="{{ asset('assets/images/tab-icon-03.png')}}" alt="">Dinner</a></li>
 
                                         </ul>
                                     </div>
@@ -600,7 +600,7 @@
                         <div class='card' style="background-image: url({{asset('assets/images/'.$img)}})">
 
                             <div class="price"><h6>{{ $product->price }} Руб</h6>
-                            @if($product->available!="Stock")
+                            @if($product->available!="1")
                             <h4 style="">Out Of Stock</h4>
 
                             @endif
@@ -661,7 +661,7 @@
       <br>
                                    <a href="/rate/{{ $product->id }}" style="color:blue;">Rate this</a>
                                   <p>Quantity: </p>
-                                @if($product->available=="Stock")
+                                @if($product->available=="1")
                                   <form method="post" action="{{route('cart.store',$product->id)}}">
                                      @csrf
                                   <input type="number" name="number" style="width:50px;" id="myNumber" value="1">
@@ -669,10 +669,10 @@
                                   </form>
                                 @endif
 
-                                @if($product->available!="Stock")
+                                @if($product->available!="1")
                                   <form method="post" action="{{route('cart.store',$product->id)}}">
                                      @csrf
-                                  <input type="number" name="number" style="width:50px;" id="myNumber" value="1">
+                                  <input type="number" name="number" style="width:60px;" id="myNumber" value="1">
                                     <input type="submit" class="btn btn-success" disabled value="Add Chart">
                                   </form>
                                 @endif
@@ -806,11 +806,8 @@
                             </div>
                             <div class="col-lg-6">
                                 <div id="filterDate2">
-                                  <div class="input-group date" data-date-format="dd/mm/yyyy">
-                                    <input  name="date" id="date" type="text" class="form-control" placeholder="dd/mm/yyyy">
-                                    <div class="input-group-addon" >
-                                      <span class="glyphicon glyphicon-th"></span>
-                                    </div>
+                                  <div class="input-group">
+                                    <input  name="date" id="date" value="{{ date('Y-m-d') }}" type="text" class="form-control" >
                                   </div>
                                 </div>
                             </div>
@@ -843,6 +840,15 @@
     </section>
     <!-- ***** Reservation Area Ends ***** -->
 
-
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            $('#date').datepicker({
+                format: 'yyyy-mm-dd',
+                startDate: new Date(),
+                autoclose: true,
+                todayHighlight: true
+            });
+        })
+    </script>
 
    @endsection

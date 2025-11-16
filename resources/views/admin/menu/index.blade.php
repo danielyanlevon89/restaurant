@@ -90,13 +90,13 @@
                             <p style="text-transform:capitalize;">Meal Type : Dinner</p>
                         @endif
                         <p style="text-transform:capitalize;">Price : {{ $product->price }} Руб</p>
-                        @if($product->available =="Stock")
+                        @if($product->available =="1")
 
                             <p style="text-transform:capitalize;">Available : Stock </p>
 
                         @endif
 
-                        @if($product->available !="Stock")
+                        @if($product->available !="1")
 
                             <p style="text-transform:capitalize;">Available : Out of Stock </p>
 

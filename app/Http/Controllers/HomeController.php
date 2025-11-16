@@ -21,11 +21,11 @@ class HomeController extends Controller
 {
     public function index(){
 
-        $menu=DB::table('products')->where('catagory','regular')->get();
+        $menu=DB::table('products')->get();
 
-        $breakfast=DB::table('products')->where('catagory','special')->where('meal_type',0)->get();
-        $lunch=DB::table('products')->where('catagory','special')->where('meal_type',1)->get();
-        $dinner=DB::table('products')->where('catagory','special')->where('meal_type',2)->get();
+        $breakfast=DB::table('products')->where('catagory','special')->where('available','1')->where('meal_type',0)->get();
+        $lunch=DB::table('products')->where('catagory','special')->where('available','1')->where('meal_type',1)->get();
+        $dinner=DB::table('products')->where('catagory','special')->where('available','1')->where('meal_type',2)->get();
 
         $chefs=DB::table('chefs')->get();
 

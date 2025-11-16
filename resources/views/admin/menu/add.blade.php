@@ -61,8 +61,8 @@
                     <div class="form-group">
                         <label for="exampleSelectGender">Available</label>
                         <select class="form-control" name="available" id="exampleSelectGender">
-                            <option>Stock</option>
-                            <option>Out of Stock</option>
+                            <option value="1">Stock</option>
+                            <option value="0">Out of Stock</option>
 
                         </select>
                     </div>

@@ -6,6 +6,7 @@ use App\Models\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Auth;
+use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
@@ -24,7 +25,12 @@ class CartController extends Controller
             return redirect()->route('login');
 
         }
-        $carts = Cart::all()->where('user_id',Auth::user()->id)->where('product_order','no');
+        $carts = DB::table('carts')
+            ->join('products', 'carts.product_id', '=', 'products.id')
+            ->where('user_id',Auth::user()->id)
+            ->where('product_order','no')
+            ->select('carts.*','products.image','products.description')
+            ->get();
         $carts_amount = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','no')->count();
         $discount_price=0;
         $without_discount_price = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','no')->sum('subtotal');
@@ -108,7 +114,7 @@ class CartController extends Controller
                 'product_id' => $product->id,
                 'user_id'=> Auth::user()->id,
                 'product_order' => "no",
-                'shipping_address' => 'N/A',
+                'room_number' => 'N/A',
                 'name' => $product->name,
                 'price' => $product->price,
                 'quantity' => $quantity,
@@ -212,10 +218,14 @@ class CartController extends Controller
         }
         else
         {
-
             $total_price = DB::table('carts')->where('user_id',Auth::user()->id)->where('product_order','no')->sum('subtotal');
         }
-
+        if($total_price == 0){
+            return redirect('/');
+        }
+        $total_extra_charge=DB::table('charges')->sum('price');
+        $total_price+=$total_extra_charge;
+        Session::put('total',$total_price);
         return view("checkout", compact('total_price'));
     }
 }

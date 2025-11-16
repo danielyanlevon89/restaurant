@@ -128,7 +128,7 @@ class InvoiceController extends Controller
 
         $req->time=$time_set_up;
         // return $req->time;
-        $data['delivery_time']=$req->time;
+        $data['delivery_date']=$req->time;
 
 
         $details = [

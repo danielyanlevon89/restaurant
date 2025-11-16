@@ -14,7 +14,7 @@ class CouponController extends Controller
     public function index()
     {
 
-        $coupons=DB::table('coupons')->get();
+        $coupons=DB::table('coupons')->paginate(10);
 
 
         return view('admin.coupon.index',compact('coupons'));

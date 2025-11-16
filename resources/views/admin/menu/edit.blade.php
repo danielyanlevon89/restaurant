@@ -69,8 +69,8 @@
                       <div class="form-group">
                         <label for="exampleSelectGender">Available</label>
                         <select class="form-control" name="available" id="exampleSelectGender">
-                          <option @php if($product->available=="Stock"){ echo"selected"; }   @endphp>Stock</option>
-                          <option @php if($product->available=="Out Of Stock"){ echo"selected"; }   @endphp>Out of Stock</option>
+                          <option value="1" @php if($product->available=="1"){ echo"selected"; }   @endphp>Stock</option>
+                          <option value="0" @php if($product->available=="0"){ echo"selected"; }   @endphp>Out of Stock</option>
 
                         </select>
                       </div>

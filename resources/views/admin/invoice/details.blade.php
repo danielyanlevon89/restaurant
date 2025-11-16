@@ -23,40 +23,37 @@
 
 
     @foreach($products as $product)
+
         <div class="card">
             <h5 class="card-header">Customer Details</h5>
             <div class="card-body">
-                <h5 class="card-text">Invoice No : {{  $product->invoice_no }}</h5>
-                <br>
-                    <?php
-
-
+                  <?php
                     $user = DB::table('users')->where('id', $product->user_id)->first();
-
-                    ?>
-                <p class="card-text">Customer Name : {{ $user->name??'' }}</p>
-                <p class="card-text">Customer Phone : {{ $user->phone??'' }}</p>
-                <p class="card-text">Customer Email : {{ $user->email??'' }}</p>
-                <p class="card-text">Shipping Address : {{ $product->shipping_address }}</p>
+                 ?>
+                <p class="card-text">Customer Name : <b>{{ $user->name??'' }}</b></p>
+                <p class="card-text">Customer Phone : <b>{{ $user->phone??'' }}</b></p>
+                <p class="card-text">Customer Email : <b>{{ $user->email??'' }}</b></p>
+                <p class="card-text">Room Number : <b>{{ $product->room_number }}</b></p>
                 <a href="{{ isset($user->id) ? route('admin.user.edit', ['id' => $user->id]) : '#'}}" class="btn btn-primary"><b>Details</b></a>
             </div>
         </div>
-
+        <div class="card">
+            <h5 class="card-header">Order Details</h5>
+            <div class="card-body">
+                <p class="card-text">Invoice No : <b>{{  $product->invoice_no }}</b></p>
+                <p class="card-text">Delivery Date : <b>{{ $product->delivery_date??'' }}</b></p>
+                <p class="card-text">Payment Method : <b>{{ $product->pay_method??'' }}</b></p>
+            </div>
+        </div>
         @break;
 
     @endforeach
-
-
     <br>
-
-
-
-
     <div class="row ">
         <div class="col-12 grid-margin">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Product Details</h4>
+                    <h4 class="card-title">Order Items</h4>
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
@@ -92,54 +89,9 @@
                                 </tr>
 
                             @endforeach
-
-                            @foreach($extra_charge as $charge)
-                                <tr>
-
-
-                                    <td> {{ $charge->name }} </td>
-
-                                    <td>
-
-                                    </td>
-                                    <td></td>
-
-
-                                    <td>  {{  $charge->price }}</td>
-
-                                </tr>
-
-                            @endforeach
-
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td>Total</td>
-                                <td class="">  {{  $wihout_discount_price }} Руб</td>
-
-
-                            </tr>
-
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td>Discount</td>
-                                <td class="">  {{  $discount_price }} Руб</td>
-
-
-                            </tr>
-
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td><h3>Total (With Discount)</h3></td>
-                                <td class=""><h3>  {{  $total_price }} Руб</h3></td>
-
-
-                            </tr>
-
                             </tbody>
                         </table>
+
                     </div>
                 </div>
             </div>
@@ -151,19 +103,40 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Order Process</h4>
+                            <table class="table table-left">
+                                <tbody>
+                                @foreach($extra_charge as $charge)
+                                    <tr>
+                                        <td> {{ $charge->name }} </td>
+                                        <td>  {{  $charge->price }}</td>
+                                    </tr>
 
+                                @endforeach
+
+
+                                <tr>
+                                    <td>Total</td>
+                                    <td class="">  {{  $wihout_discount_price }} Руб</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Discount</td>
+                                    <td class="">  {{  $discount_price }} Руб</td>
+                                </tr>
+
+                                <tr>
+                                    <td><h3>Total (With Discount)</h3></td>
+                                    <td class=""><h3>  {{  $total_price }} Руб</h3></td>
+                                </tr>
+
+
+                                </tbody>
+                            </table>
 
                             <form class="forms-sample" action="{{route('admin.invoice.approve', ['id' => $product->invoice_no])}}"
                                   method="post" enctype="multipart/form-data">
 
                                 @csrf
-
-                                <div class="form-group">
-                                    <label for="exampleInputName1">Delivery Time</label>
-                                    <input type="datetime-local" name="time" value="2022-07-28T19:30"
-                                           class="form-control" id="exampleInputName1">
-                                </div>
-
 
                                 <button type="submit" class="btn btn-primary me-2">Approve Order</button>
                                 <a href="{{route('admin.invoice.cancel', ['id' => $product->invoice_no])}}"
@@ -196,7 +169,6 @@
                 background-color: #f44336;
                 color: white;
             }
-
             .success {
                 padding: 20px;
                 background-color: #4BB543;
@@ -213,7 +185,10 @@
                 cursor: pointer;
                 transition: 0.3s;
             }
-
+            .table-left{
+                text-align: left;
+                width: 30% !important;
+            }
             .closebtn:hover {
                 color: black;
             }

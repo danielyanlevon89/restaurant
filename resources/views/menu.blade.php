@@ -72,11 +72,11 @@
             <br>
             <br>
 
-                        @if($product->available=="Stock")
-                        <input type="number" name="number" style="width:50px;" id="myNumber" min="1" value="1">
+                        @if($product->available=="1")
+                        <input type="number" name="number" style="width:60px;" id="myNumber" min="1" value="1">
                         <button class="btn btn-success">Add to Cart</button>
                         @endif
-                        @if($product->available!="Stock") <p class="btn btn-danger">Out of Stock</p>
+                        @if($product->available!="1") <p class="btn btn-danger">Out of Stock</p>
                         @endif
                     </form>
                 </td>

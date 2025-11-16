@@ -23,10 +23,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/owl-carousel.css')}}">
 
     <link rel="stylesheet" href="{{ asset('assets/css/lightbox.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker.min.css')}}">
 
-{{--    <script src="{{ asset('assets/js/angular.min.js')}}"></script>--}}
-{{--    <script src="{{ asset('assets/js/bKash-checkout.js')}}"></script>--}}
-{{--    <script src="{{ asset('assets/js/bKash-checkout-sandbox.js')}}"></script>--}}
 
     </head>
 

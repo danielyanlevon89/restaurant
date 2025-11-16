@@ -1124,6 +1124,9 @@ select {
 .col-span-6 {
 	grid-column: span 6 / span 6;
 }
+.float-right {
+	float: right;
+}
 .float-none {
 	float: none;
 }
@@ -1223,6 +1226,12 @@ select {
 }
 .-mt-px {
 	margin-top: -1px;
+}
+.mr-auto {
+	margin-right: auto;
+}
+.ml-auto {
+	margin-left: auto;
 }
 .block {
 	display: block;

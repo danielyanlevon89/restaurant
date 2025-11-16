@@ -22,7 +22,7 @@
                           </div>
                         </div>
                       </div>
-                      <h6 class="text-muted font-weight-normal">Pending Order</h6>
+                      <h6 class="text-muted font-weight-normal">Pending Orders</h6>
                     </div>
                   </div>
                 </div>
@@ -42,7 +42,7 @@
                           </div>
                         </div>
                       </div>
-                      <h6 class="text-muted font-weight-normal">Processing Order</h6>
+                      <h6 class="text-muted font-weight-normal">Processing Orders</h6>
                     </div>
                   </div>
                 </div>
@@ -62,7 +62,7 @@
                           </div>
                         </div>
                       </div>
-                      <h6 class="text-muted font-weight-normal">Cancel Order</h6>
+                      <h6 class="text-muted font-weight-normal">Cancel Orders</h6>
                     </div>
                   </div>
                 </div>
@@ -82,7 +82,7 @@
                           </div>
                         </div>
                       </div>
-                      <h6 class="text-muted font-weight-normal">Complete Order</h6>
+                      <h6 class="text-muted font-weight-normal">Complete Orders</h6>
                     </div>
                   </div>
                 </div>
@@ -158,26 +158,11 @@
 
                           @endif
                           @php
-
                           $index_search = array_search($prod, $copy_product);
-
-
-
-
                           $product_get=DB::table('products')->where('id',$index_search)->first();
-
-
-
-
                           $copy_product[$index_search]=NULL;
-
-
                           $voter=DB::table('rates')->where('product_id',$index_search)->count();
-
                           $i++;
-
-
-
                           @endphp
                             <div class="preview-item border-bottom">
                               <div class="preview-thumbnail">
@@ -200,9 +185,6 @@
                               </div>
                             </div>
                             @endforeach
-
-
-
                           </div>
                         </div>
                       </div>
@@ -214,7 +196,7 @@
                 <div class="col-sm-4 grid-margin">
                   <div class="card">
                     <div class="card-body">
-                      <h5>Total Customer</h5>
+                      <h5>Total Customers</h5>
                       <div class="row">
                         <div class="col-8 col-sm-12 col-xl-8 my-auto">
                           <div class="d-flex d-sm-block d-md-flex align-items-center">
@@ -233,26 +215,7 @@
                 <div class="col-sm-4 grid-margin">
                   <div class="card">
                     <div class="card-body">
-                      <h5>Total Delivery Boy</h5>
-                      <div class="row">
-                        <div class="col-8 col-sm-12 col-xl-8 my-auto">
-                          <div class="d-flex d-sm-block d-md-flex align-items-center">
-                            <h2 class="mb-0">{{      $delivery_boy }}</h2>
-                            <p class="text-success ms-2 mb-0 font-weight-medium"></p>
-                          </div>
-                          <h6 class="text-muted font-weight-normal"></h6>
-                        </div>
-                        <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                          <i class="icon-lg mdi mdi-wallet-travel text-danger ms-auto"></i>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-4 grid-margin">
-                  <div class="card">
-                    <div class="card-body">
-                      <h5>Total Admin</h5>
+                      <h5>Total Admins</h5>
                       <div class="row">
                         <div class="col-8 col-sm-12 col-xl-8 my-auto">
                           <div class="d-flex d-sm-block d-md-flex align-items-center">
@@ -278,51 +241,24 @@
                         <table class="table">
                           <thead>
                             <tr>
-
-                              <th style="text-align:center;"> Product ID </th>
+                              <th style="text-align:center;"> Product Image </th>
+                              <th style="text-align:center;"> Product id </th>
                               <th style="text-align:center;"> Product Name </th>
-                              <th  style="text-align:center;"> Price </th>
-                              <th   style="text-align:center;"> Quantity </th>
-
+                              <th style="text-align:center;"> Price </th>
+                              <th style="text-align:center;"> Quantity </th>
                             </tr>
                           </thead>
                           <tbody>
 
-
-
-                          @php
-
-
-                              $i=1;
-
-                          @endphp
-
                           @foreach($product_cart as $prod)
+                            <tr class="best_sellers">
 
-                          @if($i>5)
-
-
-                          @break;
-
-                          @endif
-                          @php
-
-                                                        $index_search = array_search($prod,$copy_cart);
-
-                                                        $product_get=DB::table('products')->where('id',$index_search)->first();
-
-                                                        $copy_cart[$index_search]=NULL;
-
-                                                        $i++;
-                          @endphp
-                            <tr>
-                              <td style="text-align:center;"> {{    $product_get->id??''      }} </td>
-                              <td style="text-align:center;"> {{   $product_get->name??''  }} </td>
-                              <td  style="text-align:center;"> {{    $product_get->price??''          }} </td>
-                              <td    style="text-align:center;"> {{              $prod      }} </td>
-
+                              <td style="text-align:center;"> <img class="image" src="{{asset('assets/images/'.$prod->image)}}" alt=""> </td>
+                              <td style="text-align:center;"> {{   $prod->product_id??''  }} </td>
+                              <td style="text-align:center;"> {{   $prod->product_name??''  }} </td>
+                              <td style="text-align:center;"> {{    $prod->product_price??''          }} </td>
+                              <td style="text-align:center;"> {{    $prod->total_sold??''          }} </td>
                             </tr>
-
                           @endforeach
 
                           </tbody>
@@ -332,33 +268,13 @@
                   </div>
                 </div>
 
-
-
-
-
-
-
 @endsection()
-
-
-
 <script type="text/javascript">
-
-
-
-
-
-
 window.onload = function () {
-
-
-
 
 var cash_pay_value = "<?php echo $cash_on_payment; ?>";
 var online_pay_value = "<?php echo $online_payment; ?>";
 
-console.log(cash_pay_value);
-console.log(online_pay_value);
 
 var chart = new CanvasJS.Chart("chartContainer", {
 	theme: "dark2", // "light2", "dark1", "dark2"
@@ -382,17 +298,3 @@ chart.render();
 
 }
 </script>
-
-
-
-<style>
-
-canvas {
-    background-color: ;
-    color: ;
-
-}​
-
-
-
-</style>

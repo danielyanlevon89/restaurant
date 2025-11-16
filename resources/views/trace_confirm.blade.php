@@ -86,9 +86,9 @@
 
     @if($product->product_order=="approve")
 
-    <h6 id="count_down" style="padding-top:25px;color:Red;padding-bottom:10px;">(Remaining : {{ $product->delivery_time }})</h6>
+    <h6 id="count_down" style="padding-top:25px;color:Red;padding-bottom:10px;">(Remaining : {{ $product->delivery_date }})</h6>
     <h1 style= "color:Gray;padding-top:10px !important;" class="border2"></h1>
-    <input type="text" id="previous_time" style="display:none" value="{{ $product->delivery_time }}">
+    <input type="text" id="previous_time" style="display:none" value="{{ $product->delivery_date }}">
 
 
 

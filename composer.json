@@ -18,7 +18,8 @@
         "simplesoftwareio/simple-qrcode": "^4.2",
         "symfony/http-client": "^5.4",
         "symfony/mailgun-mailer": "^5.4",
-        "symfony/postmark-mailer": "^5.4"
+        "symfony/postmark-mailer": "^5.4",
+        "yoomoney/yookassa-sdk-php": "^2.12"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

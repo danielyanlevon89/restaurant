@@ -138,8 +138,6 @@
                   </li>
                   <li class="nav-item"><a class="nav-link" href="{{route('admin.orders.cancel')}}">Cancelled Order</a>
                   </li>
-                  <li class="nav-item"><a class="nav-link" href="{{route('admin.orders.location')}}">Update Location</a>
-                  </li>
 
               </ul>
             </div>
@@ -224,8 +222,8 @@
             </button>
             <ul class="navbar-nav w-100">
               <li class="nav-item w-100">
-                <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-                  <input type="text" class="form-control" placeholder="Search products">
+                <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search" action="{{route('admin.orders.search')}}">
+                  <input type="text" name="search" class="form-control" placeholder="Search Order">
                 </form>
               </li>
             </ul>
@@ -270,16 +268,9 @@
                   <p class="p-3 mb-0 text-center">See all projects</p>
                 </div>
               </li>
-              <li class="nav-item nav-settings d-none d-lg-block">
-                <a class="nav-link" href="#">
-                  <i class="mdi mdi-view-grid"></i>
-                </a>
-              </li>
+
               <li class="nav-item dropdown border-left">
-                <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="mdi mdi-email"></i>
-                  <span class="count bg-success"></span>
-                </a>
+
 
                 <li class="nav-item dropdown">
                 <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">

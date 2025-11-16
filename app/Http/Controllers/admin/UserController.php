@@ -14,7 +14,7 @@ class UserController extends Controller
     public function index()
     {
 
-        $users=DB::table('users')->get();
+        $users=DB::table('users')->paginate(10);
 
 
         return view('admin.user.index',compact('users'));

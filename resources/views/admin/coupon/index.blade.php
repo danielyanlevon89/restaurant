@@ -85,6 +85,7 @@
                             </tbody>
                         </table>
                     </div>
+                    {{ $coupons->links() }}
                 </div>
             </div>
         </div>
