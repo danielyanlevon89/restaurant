@@ -253,7 +253,7 @@
                           @foreach($product_cart as $prod)
                             <tr class="best_sellers">
 
-                              <td style="text-align:center;"> <img class="image" src="{{asset('assets/images/'.$prod->image)}}" alt=""> </td>
+                              <td style="text-align:center;"> <img class="image" src="{{asset('assets/images/'.($prod->image??''))}}" alt=""> </td>
                               <td style="text-align:center;"> {{   $prod->product_id??''  }} </td>
                               <td style="text-align:center;"> {{   $prod->product_name??''  }} </td>
                               <td style="text-align:center;"> {{    $prod->product_price??''          }} </td>
